@@ -1,9 +1,10 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@include file="header.jsp"%>
 <html>
 
 <body>
+
 	Название комнаты : ${room.name}
 	<br>
 	Описание комнаты : ${room.description}

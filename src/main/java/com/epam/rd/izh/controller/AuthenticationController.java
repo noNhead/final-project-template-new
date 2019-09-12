@@ -46,7 +46,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ModelAndView login(ModelAndView modelAndView, User user) {
         userService.authorize(user);
-        modelAndView.setViewName("login-page");
+        modelAndView.setViewName("redirect:/room");
         return modelAndView;
 
     }
@@ -61,7 +61,7 @@ public class AuthenticationController {
     @PostMapping("/registration")
     public ModelAndView registration(ModelAndView modelAndView, User user) {
         userService.addNewUser(user);
-        modelAndView.setViewName("redirect:/home");
+        modelAndView.setViewName("redirect:/room");
         return modelAndView;
     }
 }

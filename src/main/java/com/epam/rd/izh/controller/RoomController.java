@@ -4,6 +4,7 @@ import com.epam.rd.izh.dto.Message;
 import com.epam.rd.izh.dto.Room;
 import com.epam.rd.izh.dto.User;
 import com.epam.rd.izh.service.IRoomService;
+import com.epam.rd.izh.service.IUserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +19,11 @@ public class RoomController {
 
     @Autowired
     private IRoomService roomService;
+    @Autowired
+    private IUserManager userManager;
 
     @GetMapping("search")
-    public ModelAndView search(@RequestParam(required = false, defaultValue = "")
-            String word) {
+    public ModelAndView search(@RequestParam(required = false, defaultValue = "") String word) {
         List<Room> rooms = roomService.search(word);
 
         ModelAndView modelAndView = new ModelAndView();
@@ -43,10 +45,9 @@ public class RoomController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView getRoom(@PathVariable Long id) {
+    public ModelAndView getRoom(ModelAndView modelAndView, @PathVariable Long id) {
         Room room = roomService.get(id);
 
-        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("room");
         modelAndView.addObject("room", room);
 

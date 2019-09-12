@@ -18,9 +18,7 @@ public class UserNameAwareInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
         User currentUser = userManager.getCurrentUser();
-
-//        modelAndView.addObject("userName", currentUser.getLogin());
-//        modelAndView.addObject("currentUserRole", currentUser.getRole());
+        modelAndView.addObject("user", currentUser);
     }
 
 }

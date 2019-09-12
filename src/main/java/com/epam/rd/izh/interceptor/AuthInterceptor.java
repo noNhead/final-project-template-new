@@ -7,7 +7,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Objects;
 
 public class AuthInterceptor implements HandlerInterceptor {
 
@@ -27,13 +26,12 @@ public class AuthInterceptor implements HandlerInterceptor {
             throws Exception {
         User currentUser = userManager.getCurrentUser();
 
-        if (Objects.isNull(currentUser)) {
+        if (currentUser == null) {
             response.sendRedirect("/login");
             return false;
         }
 
         return true;
-
     }
 
 }

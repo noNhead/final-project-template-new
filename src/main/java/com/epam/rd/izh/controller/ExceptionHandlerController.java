@@ -15,6 +15,7 @@ public class ExceptionHandlerController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error");
         modelAndView.addObject("error", ex.getMessage());
+        System.out.println(ex);
         return modelAndView;
     }
 
@@ -23,6 +24,7 @@ public class ExceptionHandlerController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error");
         modelAndView.addObject("error", "Что-то пошло не так, обратитесь в службу тех поддержки");
+        System.out.println(ex);
         return modelAndView;
     }
 
@@ -31,6 +33,7 @@ public class ExceptionHandlerController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login-page");
         modelAndView.addObject("errorMsg", ex.getMessage());
+        System.out.println(ex);
         return modelAndView;
     }
 
@@ -39,6 +42,8 @@ public class ExceptionHandlerController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("registration-page");
         modelAndView.addObject("errorMsg", ex.getMessage());
+        System.out.println(ex);
         return modelAndView;
     }
+
 }

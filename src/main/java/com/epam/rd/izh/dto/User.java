@@ -25,6 +25,13 @@ public class User {
         super();
     }
 
+    public User(
+            @NotEmpty(message = "Логин должен быть заполнен") @Size(min = 3, message = "Логин должен быть длиннее 3 символов") String login,
+            @NotEmpty(message = "Логин должен быть заполнен") @Size(min = 5, message = "Логин должен быть длиннее 5 символов") String password) {
+        this.login = login;
+        this.password = password;
+    }
+
     public User(@NotEmpty(message = "Имя должно быть заполнено")
             @Size(min = 3, max = 12, message = "Имя должно быть длиннее 3 символов и меньше 12 символов") String name) {
         this.name = name;

@@ -9,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -73,5 +75,15 @@ public class AuthenticationController {
         }
 
         return modelAndView;
+    }
+
+
+    /**
+     * Проверка на существование пользователя с таким логином
+     */
+    @ResponseBody
+    @GetMapping("checkloginexist")
+    public User login(@RequestParam String login) {
+        return new User("234324","3123");
     }
 }

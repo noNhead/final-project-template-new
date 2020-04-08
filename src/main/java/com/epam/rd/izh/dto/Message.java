@@ -9,6 +9,7 @@ public class Message {
      * https://mvnrepository.com/artifact/org.projectlombok/lombok
      */
 
+    private String id;
     private String message;
 
   public String getMessage() {
@@ -17,5 +18,13 @@ public class Message {
 
   public void setMessage(String message) {
     this.message = message;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 }

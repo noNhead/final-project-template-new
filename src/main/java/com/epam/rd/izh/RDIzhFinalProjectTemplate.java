@@ -24,8 +24,8 @@ public class RDIzhFinalProjectTemplate {
 	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 		String userNameDatabase = "root";
 		String passwordDatabase = "1";
-		String connectionUrl = "jdbc:mysql://localhost:3306/mysql";
-		Class.forName("com.mysql.jdbc.Driver");
+		String connectionUrl = "jdbc:mysql://localhost:3306/mysql?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		try(Connection connection = DriverManager.getConnection(connectionUrl, userNameDatabase, passwordDatabase)){
 			System.out.println("connected");
 		}

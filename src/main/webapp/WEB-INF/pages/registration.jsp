@@ -19,7 +19,7 @@
         <form:input path="login" id="check_login" title="Login" />
       </div>
 
-      <div">
+      <div>
         <label title="Password">Password</label>
         <form:input path="password" id="check_password" type="password" title="Password" />
       </div>

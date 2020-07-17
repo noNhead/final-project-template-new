@@ -25,6 +25,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+
 		<!-- Библиотека для компилирования JSP -->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>

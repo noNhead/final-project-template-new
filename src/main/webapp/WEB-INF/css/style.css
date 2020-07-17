@@ -1,0 +1,243 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 27px;
+}
+
+.t_font_link {
+   font-family: 'Roboto', sans-serif;
+   font-size: 24px;
+}
+
+.t_regForm {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    padding-top: 20px;
+}
+
+.navLink {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.rForm {
+    background-color: black;
+    border-style: solid;
+    text-align: center;
+    width: 250px;
+    width: 50px;
+}
+
+header {
+    background-color: rgba(48, 53, 53, 0.808);
+    z-index: 20;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 5vh;
+}
+
+footer {
+    background-color: rgb(44, 44, 44);
+    bottom: 0;
+    z-index: 20;
+    width: 100%;
+    color: aliceblue;
+    font-size: 14px;
+    height: 3vh;
+}
+
+.login {
+    text-align: center;
+    float: right;
+    margin-left:auto;
+    margin-right: 0px;
+    right: 20px;
+    padding-right: 20px;
+    padding-top: 8px;
+    position: relative;
+}
+
+.navigationElement {
+    display: block;
+    position: relative;
+    text-align: center;
+    padding-left: 20px;
+    padding-top: 8px;
+}
+
+.logo {
+    visibility: none;
+    background-image: url("_318-9298.jpg");
+    image-rendering: auto;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #BDBDBD;
+}
+
+.mainPage {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-basis: 100px;
+}
+
+.page {
+    display: flex;
+    background-color: rgb(218, 238, 255);
+    width: 60vw;
+    height: 92vh;
+}
+
+.leftNavigation {
+    background-color: rgb(218, 238, 255);
+    width: 19vw;
+    margin-right: 1vw;
+    visibility: hidden;
+}
+
+.rightNavigation {
+    background-color: rgb(218, 238, 255);
+    width: 19vw;
+    margin-left: 1vw;
+    visibility: hidden;
+}
+
+.regForm {
+    background-color: #BDBDBD;
+    margin-top: 180px;
+    margin-left: 40%;
+    margin-right: 40%;
+    width: auto;
+    height: 270px;
+    border-radius: 20px;
+    padding-left: 25px;
+    padding-top: 20px;
+}
+
+.inputForm {
+    width: 80%;
+}
+
+.arr {
+    margin-top: 44%;
+}
+
+.loginForm {
+    background-color: #BDBDBD;
+    margin-top: 180px;
+    margin-left: 40%;
+    margin-right: 40%;
+    width: auto;
+    height: 220px;
+    border-radius: 20px;
+    padding-left: 25px;
+    padding-top: 20px;
+}
+
+.allEntity {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 5% 8% 5% 8%;
+    background-color: rgb(218, 238, 255);
+
+}
+
+.entity {
+    display: flex;
+    flex-direction: column;
+    width: 96%;
+    height: 48%;
+    margin: 0% 2% 2% 2%; 
+}
+
+.author {
+    background-color: rgb(188, 224, 255);
+    padding-left: 3%;
+
+}
+
+.tableBooks {
+    width: 30vw;
+}
+
+td {
+    padding: 1vw;
+}
+
+.t_table_text {
+    font-family: 'Roboto', sans-serif;
+}
+
+.book {
+    display: flex;
+    flex-direction: row;
+}
+
+.bookLogo {
+    width: 20vh;
+    height: 15vw;
+    background-image: url(b1.jpg);
+    background-size: cover;
+}
+
+.bookNameAuthor {
+    
+    width: 60vh;
+    margin-left: 2%;
+}
+
+.bookName {
+    
+    padding: 0 0 0 10px;
+    height: 18%;
+}
+
+.authorName {
+    
+    padding: 0 0 0 10px;
+    height: 79%;
+}
+
+.bookDescription {
+    margin-top: 3%;
+    
+    height: auto;
+}
+
+.download {
+    
+    margin: 2% 0 0 0;
+    height: 10vh;
+}
+
+.t_font_book_link {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    padding: 2% 0 0 2%;
+}
+
+#addNameBook {
+    width: 20%;
+}
+
+#addAuthorName {
+    width: 20%;
+    margin-top: 20px;
+}
+
+#addBookDescription {
+    width: 80%;
+    height: 30%;
+    margin-top: 5%;
+}
+
+#addBookImg {
+    margin-top: 5%;
+    width: 40%;
+}

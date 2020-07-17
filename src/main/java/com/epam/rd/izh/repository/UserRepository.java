@@ -20,8 +20,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepository {
-  private final List<AuthorizedUser> users = new ArrayList<>();
-
   /**
    * В данном методе использована библиотека Stream API:
    * .filter проверяет каждый элемент коллекции на удовлетворение условия .equals(login), в случае, если совпадающий
@@ -35,17 +33,13 @@ public class UserRepository {
 
   @Nullable
   public AuthorizedUser getAuthorizedUserByLogin(@Nonnull String login) {
-    return users.stream()
-        .filter(value -> value.getLogin().equals(login))
-        .findFirst().orElse(null);
+    return null;
   }
 
   public boolean addAuthorizedUser(@Nullable AuthorizedUser user) {
     if (user != null) {
-      users.add(user);
       return true;
     }
     return false;
   }
-
 }

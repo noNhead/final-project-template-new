@@ -99,7 +99,7 @@ public class AuthenticationController {
      * Добавление пользователя в репозиторий или в базу данных через CRUD операции DAO.
      * Рекомендуется вынести эту логику на сервисный слой.
      */
-    userRepository.addAuthorizedUser(registeredUser);
+    //userRepository.addAuthorizedUser(registeredUser);
     /**
      * В случае успешной регистрации редирект можно настроить на другой энд пойнт.
      */

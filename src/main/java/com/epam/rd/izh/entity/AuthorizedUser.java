@@ -1,5 +1,7 @@
 package com.epam.rd.izh.entity;
 
+import java.util.UUID;
+
 /**
  * Сущность пользователя, содержит данные(credentials), необходимые для авторизации в Spring Web приложении; Может
  * быть использована как часть бизнес логики приложеняи, например сотрудник больницы, где role определяет его
@@ -23,6 +25,27 @@ public class AuthorizedUser {
    */
 
   private String role;
+
+  private UUID id;
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
+
+  public AuthorizedUser(String login, String password, String role, UUID uuid) {
+    this.login = login;
+    this.password = password;
+    this.role = role;
+    if (uuid != null) {
+      this.id = uuid;
+    } else {
+      this.id = UUID.randomUUID();
+    }
+  }
+
+  public UUID getId() {
+    return id;
+  }
 
   public String getLogin() {
     return login;

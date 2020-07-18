@@ -18,7 +18,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 public class RDIzhFinalProjectTemplate {
 	public static void main(String[] args) {
-
-			SpringApplication.run(RDIzhFinalProjectTemplate.class, args);
+		SpringApplication.run(RDIzhFinalProjectTemplate.class, args);
 	}
 }

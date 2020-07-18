@@ -2,6 +2,8 @@ package com.epam.rd.izh.service;
 
 import com.epam.rd.izh.entity.AuthorizedUser;
 import com.epam.rd.izh.repository.UserRepository;
+
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,12 @@ public class UserDetailsServiceMapper implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 
-    AuthorizedUser authorizedUserDto = userRepository.getAuthorizedUserByLogin(login);
+    AuthorizedUser authorizedUserDto = null;
+    try {
+      authorizedUserDto = userRepository.getAuthorizedUserByLogin(login);
+    } catch (SQLException | ClassNotFoundException throwables) {
+      throwables.printStackTrace();
+    }
     Set<GrantedAuthority> roles = new HashSet<>();
     roles.add(new SimpleGrantedAuthority(authorizedUserDto.getRole()));
 

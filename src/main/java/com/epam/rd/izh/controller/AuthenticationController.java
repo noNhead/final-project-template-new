@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.SQLException;
+
 /**
  * В аргументы контроллеров, которые обрабатывают запросы, можно указать дополнительные входные параметры: Например:
  * HttpServletRequest и HttpServletResponse. Данные объекты автоматически заполняться данными о реквесте и респонсе. Эти
@@ -61,7 +63,7 @@ public class AuthenticationController {
   @GetMapping("/registration")
   public String viewRegistration(Model model) {
     if(!model.containsAttribute("registrationForm")){
-      model.addAttribute("registrationForm", new AuthorizedUser());
+      model.addAttribute("registrationForm", new AuthorizedUser(null, null,null));
     }
     return "registration";
   }
@@ -99,7 +101,11 @@ public class AuthenticationController {
      * Добавление пользователя в репозиторий или в базу данных через CRUD операции DAO.
      * Рекомендуется вынести эту логику на сервисный слой.
      */
-    //userRepository.addAuthorizedUser(registeredUser);
+    try {
+      userRepository.addAuthorizedUser(registeredUser);
+    } catch (SQLException | ClassNotFoundException throwables) {
+      throwables.printStackTrace();
+    }
     /**
      * В случае успешной регистрации редирект можно настроить на другой энд пойнт.
      */

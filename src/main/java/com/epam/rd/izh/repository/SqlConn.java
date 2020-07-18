@@ -5,13 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static com.epam.rd.izh.util.StringConstants.*;
+
 public class SqlConn {
     public static Statement getStatement() throws ClassNotFoundException, SQLException {
-        String userNameDatabase = "root";
-        String passwordDatabase = "1";
-        String connectionUrl = "jdbc:mysql://localhost:3306/mysql?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        try(Connection connection = DriverManager.getConnection(connectionUrl, userNameDatabase, passwordDatabase)) {
+        try(Connection connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS)) {
             System.out.println("connected");
             return connection.createStatement();
         }

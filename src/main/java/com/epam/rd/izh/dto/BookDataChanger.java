@@ -5,7 +5,7 @@ import com.epam.rd.izh.repository.BookRepository;
 
 import java.sql.SQLException;
 
-public class BookChanger {
+public class BookDataChanger {
     BookRepository bookRepository;
     public AddedBook editBook(AddedBook book, String column, String newString) {
         try {
@@ -16,5 +16,15 @@ public class BookChanger {
             throwables.printStackTrace();
         }
         return book;
+    }
+
+    public boolean deleteBook(AddedBook book) {
+        try {
+            bookRepository.deleteBook(book.getId());
+            return true;
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
     }
 }

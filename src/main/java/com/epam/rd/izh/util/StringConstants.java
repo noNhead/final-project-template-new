@@ -21,4 +21,5 @@ public class StringConstants {
   public static final String PASSWORD = "password";
   public static final String ROLE = "role";
   public static final String UUIDFORUSER = "UUID";
+  public static final String LOGIN = "login";
 }

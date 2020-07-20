@@ -1,5 +1,6 @@
 package com.epam.rd.izh.controller;
 
+import com.epam.rd.izh.dto.UserValidate;
 import com.epam.rd.izh.entity.AuthorizedUser;
 import com.epam.rd.izh.repository.UserRepository;
 import javax.validation.Valid;
@@ -54,16 +55,42 @@ public class AuthenticationController {
      * spring.mvc.view.suffix=.jsp
      * Spring MVC, используя суффикс и префикс, создаст итоговый путь к JSP: /WEB-INF/pages/login.jsp
      */
+    if (!model.containsAttribute("loginForm")) {
+      model.addAttribute("loginForm", new AuthorizedUser(null,null,null,null));
+    }
     return "login";
   }
+  @PostMapping("/login/proceed")
+  public String processLogin(@Valid @ModelAttribute("loginForm") AuthorizedUser loginUser, BindingResult bindingResult) {
 
+    if (bindingResult.hasErrors()) {
+      return "redirect:/login";
+    }
+    AuthorizedUser authorizedUser;
+    try {
+      authorizedUser = userRepository.getAuthorizedUserByLogin(loginUser.getLogin());
+    } catch (SQLException | ClassNotFoundException throwables) {
+      throwables.printStackTrace();
+      return "redirect:/login";
+    }
+    if (authorizedUser != null) {
+      if (!passwordEncoder.matches(loginUser.getPassword(), authorizedUser.getPassword())){
+        return "redirect:/login";
+      }
+      else {
+        return "redirect:/index";
+      }
+    }
+
+    return "redirect:/login";
+  }
   /**
    * Метод, отвечающий за логику регистрации пользователя.
    */
   @GetMapping("/registration")
   public String viewRegistration(Model model) {
     if(!model.containsAttribute("registrationForm")){
-      model.addAttribute("registrationForm", new AuthorizedUser(null, null,null));
+      model.addAttribute("registrationForm", new AuthorizedUser(null, null,null, null));
     }
     return "registration";
   }
@@ -79,24 +106,16 @@ public class AuthenticationController {
      * Здесь по желанию можно добавить валидацию введенных данных на back-end слое.
      * Для этого необходимо написать реализацию Validator.
      */
-    //registeredUser.validate(registeredUserDto, bindingResult);
-
+    String validateResult = UserValidate.Validate(registeredUser);
+    if (validateResult != null) {
+      return "redirect:/registration";
+    }
     if (bindingResult.hasErrors()) {
       //логика отображения ошибки, не является обязательной
       //...
       //...
       return "redirect:/registration";
     }
-    /**
-     * Здесь происходит присвоение роли пользователю и шифрование пароля.
-     * Роль может быть так же определена пользователем на этапе регистрации, либо иным способов, зависящим
-     * от темы финального проекта.
-     * registeredUser может быть DTO объектом, преобразуемым в AuthorizedUser сущность в сервисе-маппере
-     * (эот сервис нужно написать самим), вместе с присвоением роли и шифрованием пароля.
-     */
-    registeredUser.setRole("User");
-    registeredUser.setPassword(passwordEncoder.encode(registeredUser.getPassword()));
-
     /**
      * Добавление пользователя в репозиторий или в базу данных через CRUD операции DAO.
      * Рекомендуется вынести эту логику на сервисный слой.
@@ -105,6 +124,7 @@ public class AuthenticationController {
       userRepository.addAuthorizedUser(registeredUser);
     } catch (SQLException | ClassNotFoundException throwables) {
       throwables.printStackTrace();
+      return "redirect:/registration";
     }
     /**
      * В случае успешной регистрации редирект можно настроить на другой энд пойнт.

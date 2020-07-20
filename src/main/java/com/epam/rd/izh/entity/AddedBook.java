@@ -4,10 +4,21 @@ import java.util.Date;
 import java.util.UUID;
 
 public class AddedBook {
-    private String name;
-    private String Author;
+    private String title;
+    private String author;
     private String imgUrl;
-    private Date date;
+    private String year;
+    private String genre;
+    private UUID id;
+
+    public AddedBook(String name, String author, String genre, String year, String imgUrl) {
+        this.title = name;
+        this.author = author;
+        this.imgUrl = imgUrl;
+        this.year = year;
+        this.genre = genre;
+        this.id = UUID.randomUUID();
+    }
 
     public String getGenre() {
         return genre;
@@ -15,18 +26,6 @@ public class AddedBook {
 
     public void setGenre(String genre) {
         this.genre = genre;
-    }
-
-    private String genre;
-    private UUID id;
-
-    public AddedBook(String name, String author, String genre, Date date, String imgUrl, UUID id) {
-        this.name = name;
-        Author = author;
-        this.imgUrl = imgUrl;
-        this.date = date;
-        this.genre = genre;
-        this.id = UUID.randomUUID();
     }
 
     public UUID getId() {
@@ -45,27 +44,27 @@ public class AddedBook {
         this.imgUrl = imgUrl;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String name) {
+        this.title = name;
     }
 
     public String getAuthor() {
-        return Author;
+        return author;
     }
 
     public void setAuthor(String author) {
-        Author = author;
+        this.author = author;
     }
 
-    public Date getDate() {
-        return date;
+    public String getYear() {
+        return year;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setYear(String year) {
+        this.year = year;
     }
 }

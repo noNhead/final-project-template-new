@@ -2,6 +2,7 @@ package com.epam.rd.izh.repository;
 
 import com.epam.rd.izh.entity.AddedBook;
 
+import javax.annotation.Nullable;
 import java.sql.*;
 import java.util.Date;
 import java.util.UUID;
@@ -21,7 +22,7 @@ public class BookRepository {
                     resultSet = stmt.executeQuery(requestSql);
                     resultSet.next();
                     return new AddedBook(resultSet.getString(NAME), resultSet.getString(AUTHOR),
-                            resultSet.getString(GENRE), resultSet.getDate(WORDDATE), resultSet.getString(IMGURL), id);
+                            resultSet.getString(GENRE), resultSet.getString(WORDDATE), resultSet.getString(IMGURL));
                 } finally {
                   if (resultSet != null) {
                       resultSet.close();
@@ -38,25 +39,30 @@ public class BookRepository {
             return null;
         }
 
-        public boolean addBook(AddedBook book) throws SQLException, ClassNotFoundException {
+        public boolean addBook(@Nullable AddedBook book) throws SQLException, ClassNotFoundException {
         if (book != null) {
             Connection connection = null;
             Statement stmt = null;
+            System.out.println("1");
             try {
-                String requestSql = "INSERT INTO finalprojectdatabase.addedbook(name, author, genre, date, imgUrl, UUID) VALUES ('" + book.getName() + "', '" + book.getAuthor() + "', '" + book.getGenre() + "', '" + book.getDate() + "', '" + book.getImgUrl() + "', '" + book.getId() + "')";
+                String requestSql = "INSERT INTO finalprojectdatabase.addedbook(name, author, genre, date, imgUrl, UUID) VALUES ('" + book.getTitle() + "', '" + book.getAuthor() + "', '" + book.getGenre() + "', '" + book.getYear() + "', '" + book.getImgUrl() + "', '" + book.getId() + "')";
                 connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
                 stmt = connection.createStatement();
-                stmt.executeQuery(requestSql);
+                stmt.executeUpdate(requestSql);
+                System.out.println("2");
                 return true;
             } finally {
                 if (stmt != null) {
                     stmt.close();
+                    System.out.println("3");
                 }
                 if (connection != null) {
                     connection.close();
+                    System.out.println("4");
                 }
             }
         }
+        System.out.println("5");
         return false;
     }
 
@@ -68,7 +74,7 @@ public class BookRepository {
                 String requestSql = "UDPATE finalprojectdatabase.addedbook SET " + column + " = " + newString + " WHERE UUID = " + id;
                 connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
                 stmt = connection.createStatement();
-                stmt.executeQuery(requestSql);
+                stmt.executeUpdate(requestSql);
                 return true;
             } finally {
                 if (stmt != null) {
@@ -90,7 +96,7 @@ public class BookRepository {
                 String requestSql = "DELETE FROM finalprojectdatabase.autorizeduser(id, name, author, genre, date, imgUrl, UUID) WHERE login = " + id;
                 connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
                 stmt = connection.createStatement();
-                stmt.executeQuery(requestSql);
+                stmt.executeUpdate(requestSql);
                 return true;
             } finally {
                 if (connection != null) {

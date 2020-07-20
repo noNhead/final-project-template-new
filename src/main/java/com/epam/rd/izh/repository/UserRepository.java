@@ -46,9 +46,10 @@ public class UserRepository {
       connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
       stmt = connection.createStatement();
       rs = stmt.executeQuery(sqlRequest);
-      rs.next();
-      if (rs != null) {
-        return new AuthorizedUser(rs.getString(NAME), rs.getString(PASSWORD), rs.getString(ROLE), UUID.fromString(rs.getString(UUIDFORUSER)));
+      if (rs.next()) {
+        return new AuthorizedUser(rs.getString(LOGIN), rs.getString(PASSWORD), rs.getString(ROLE), UUID.fromString(rs.getString(UUIDFORUSER)));
+      } else {
+        return null;
       }
     } finally {
       if (rs != null) {
@@ -61,19 +62,17 @@ public class UserRepository {
         connection.close();
       }
     }
-    return null;
   }
 
   public boolean addAuthorizedUser(@Nullable AuthorizedUser user) throws SQLException, ClassNotFoundException {
-    Connection connection = null;
-    Statement stmt = null;
     if (user != null) {
+      Connection connection = null;
+      Statement stmt = null;
       try {
-        String sqlRequest = String.format("INSERT INTO finalprojectdatabase.autorizeduser(login, password, role, UUID) VALUES (%s','%s','%s', '%s')", user.getLogin(), user.getPassword(), user.getRole(), user.getId().toString());
+        String sqlRequest = "INSERT INTO finalprojectdatabase.autorizeduser(login, password, role, UUID) VALUES ('"+ user.getLogin() + "','" + user.getPassword() + "','"+ user.getRole() +"', '" + user.getId().toString() + "')";
         connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
         stmt = connection.createStatement();
-        stmt.executeQuery(sqlRequest);
-        SqlConn.getStatement().executeQuery(sqlRequest);
+        stmt.executeUpdate(sqlRequest);
         return true;
       } finally {
         if (stmt != null) {
@@ -83,11 +82,12 @@ public class UserRepository {
           connection.close();
         }
       }
+    } else {
+      return false;
     }
-    return false;
   }
 
-  public boolean editAutorizedUser(@Nullable String login, String column, @Nullable String newString) throws SQLException, ClassNotFoundException {
+  public boolean editAuthorizedUser(@Nullable String login, String column, @Nullable String newString) throws SQLException, ClassNotFoundException {
     Connection connection = null;
     Statement stmt = null;
     if (login != null && newString != null) {
@@ -95,7 +95,7 @@ public class UserRepository {
         String sqlRequest = "UDPATE finalprojectdatabase.autorizeduser SET " + column + " = " + newString + "WHERE login = " + login;
         connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
         stmt = connection.createStatement();
-        stmt.executeQuery(sqlRequest);
+        stmt.executeUpdate(sqlRequest);
         return true;
       } finally {
         if (stmt != null) {
@@ -108,7 +108,7 @@ public class UserRepository {
     }
     return false;
   }
-  public boolean deleteAutorizedUser(@Nullable String login) throws SQLException, ClassNotFoundException {
+  public boolean deleteAuthorizedUser(@Nullable String login) throws SQLException, ClassNotFoundException {
     Connection connection = null;
     Statement stmt = null;
     if (login != null) {
@@ -116,7 +116,7 @@ public class UserRepository {
         String sqlRequest = "DELETE FROM finalprojectdatabase.autorizeduser(id, login, password, role) WHERE login = " + login;
         connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
         stmt = connection.createStatement();
-        stmt.executeQuery(sqlRequest);
+        stmt.executeUpdate(sqlRequest);
         return true;
       } finally {
         if (stmt != null) {

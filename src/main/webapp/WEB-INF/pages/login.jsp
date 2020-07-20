@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 
@@ -26,16 +27,16 @@
       <div class="page">
         <div class="loginForm">
           <div class="subRegForm">
-    <form action="login/process" method="post">
+    <form:form action="login/process" method="post" modelAttribute="loginForm">
       <p title="Login form">Sign up</p>
       <div class="group">
         <label for="">Login</label>
-        <input name="login" />
+        <form:input path="login" id="check_login" name="login" />
       </div>
 
       <div class="group">
         <label for="">Password</label>
-        <input name="password" type="password" />
+        <form:input path="password" id="check_password" name="password" type="password" />
         <div class="error">${error_login_placeholder}</div>
       </div>
 
@@ -43,7 +44,7 @@
       <div class="group">
         <button class="button">Confirm</button>
       </div>
-    </form>
+    </form:form>
 
     <form action="registration" method="get">
       <div>

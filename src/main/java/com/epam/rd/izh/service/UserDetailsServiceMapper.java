@@ -1,5 +1,7 @@
 package com.epam.rd.izh.service;
 
+import com.epam.rd.izh.dto.UserDataChanger;
+import com.epam.rd.izh.dto.UserValidate;
 import com.epam.rd.izh.entity.AuthorizedUser;
 import com.epam.rd.izh.repository.UserRepository;
 
@@ -25,6 +27,7 @@ public class UserDetailsServiceMapper implements UserDetailsService {
 
   @Autowired
   UserRepository userRepository;
+  UserDataChanger userDataChanger;
 
   /**
    * Данный метод должен вернуть объект User, являющийся пользователем текущей сессии.
@@ -53,6 +56,27 @@ public class UserDetailsServiceMapper implements UserDetailsService {
         authorizedUserDto.getPassword(),
         roles
     );
+  }
+
+  /**
+   * Проверяет логин пароль перед отправкой запроса в базу, наполняет сущность ролью
+   * Шифрует пароль.
+   * @param user сущность пользователя
+   * @return возвращает true если пользователь успешно добавлен
+   */
+  public boolean UserRegistration(AuthorizedUser user) {
+    String registerValidateResult = UserValidate.Validate(user);
+    if (registerValidateResult == null) {
+      return false;
+    }
+    user = userDataChanger.FirstUserCreate(user);
+    try {
+      userRepository.addAuthorizedUser(user);
+    } catch (SQLException | ClassNotFoundException throwables) {
+      throwables.printStackTrace();
+      return false;
+    }
+    return true;
   }
 
 }

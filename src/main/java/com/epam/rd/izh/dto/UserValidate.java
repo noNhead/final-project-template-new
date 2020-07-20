@@ -1,8 +1,6 @@
 package com.epam.rd.izh.dto;
 
 import com.epam.rd.izh.entity.AuthorizedUser;
-import org.springframework.validation.BindingResult;
-
 import javax.validation.Valid;
 
 public class UserValidate {

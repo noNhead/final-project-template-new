@@ -4,6 +4,8 @@ import com.epam.rd.izh.dto.UserValidate;
 import com.epam.rd.izh.entity.AuthorizedUser;
 import com.epam.rd.izh.repository.UserRepository;
 import javax.validation.Valid;
+
+import com.epam.rd.izh.service.UserDetailsServiceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,8 @@ public class AuthenticationController {
 
   @Autowired
   private PasswordEncoder passwordEncoder;
+
+  UserDetailsServiceMapper userDetailsServiceMapper;
 
   /**
    * Метод, отвечающий за логику авторизации пользователя.
@@ -102,33 +106,16 @@ public class AuthenticationController {
   public String processRegistration(@Valid @ModelAttribute("registrationForm") AuthorizedUser registeredUser,
       BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
-    /**
-     * Здесь по желанию можно добавить валидацию введенных данных на back-end слое.
-     * Для этого необходимо написать реализацию Validator.
-     */
-    String validateResult = UserValidate.Validate(registeredUser);
-    if (validateResult != null) {
-      return "redirect:/registration";
-    }
     if (bindingResult.hasErrors()) {
       //логика отображения ошибки, не является обязательной
       //...
       //...
       return "redirect:/registration";
     }
-    /**
-     * Добавление пользователя в репозиторий или в базу данных через CRUD операции DAO.
-     * Рекомендуется вынести эту логику на сервисный слой.
-     */
-    try {
-      userRepository.addAuthorizedUser(registeredUser);
-    } catch (SQLException | ClassNotFoundException throwables) {
-      throwables.printStackTrace();
+
+    if(!userDetailsServiceMapper.UserRegistration(registeredUser)){
       return "redirect:/registration";
     }
-    /**
-     * В случае успешной регистрации редирект можно настроить на другой энд пойнт.
-     */
     return "redirect:/login";
   }
 

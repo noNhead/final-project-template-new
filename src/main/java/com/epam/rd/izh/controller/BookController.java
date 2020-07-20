@@ -1,7 +1,7 @@
 package com.epam.rd.izh.controller;
 
 import com.epam.rd.izh.entity.AddedBook;
-import com.epam.rd.izh.repository.BookRepository;
+import com.epam.rd.izh.service.BookDetailsServiceMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
-import java.sql.SQLException;
 
 @Controller
 public class BookController {
-    BookRepository bookRepository = new BookRepository();
+    BookDetailsServiceMapper bookDetailsServiceMapper;
 
     @GetMapping("/bookform")
     public String bookForm(Model model){
@@ -28,13 +27,10 @@ public class BookController {
         if (bindingResult.hasErrors()) {
             return "redirect:/bookform";
         }
-        System.out.println(addedBook.getTitle());
-        try {
-            bookRepository.addBook(addedBook);
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
+        if(!bookDetailsServiceMapper.BookAdding(addedBook)){
             return "redirect:/bookform";
         }
+
         return "bookform";
     }
 }

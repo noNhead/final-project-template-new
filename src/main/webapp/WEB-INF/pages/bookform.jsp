@@ -1,10 +1,11 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title>Registration</title>
+    <title>Adding a book</title>
 </head>
 
 <body>

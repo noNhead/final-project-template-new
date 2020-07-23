@@ -1,8 +1,5 @@
 package com.epam.rd.izh.entity;
 
-import org.springframework.validation.BindingResult;
-
-import javax.validation.Valid;
 import java.util.UUID;
 
 /**

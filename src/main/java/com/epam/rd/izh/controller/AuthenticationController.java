@@ -85,7 +85,6 @@ public class AuthenticationController {
         return "redirect:/index";
       }
     }
-
     return "redirect:/login";
   }
   /**

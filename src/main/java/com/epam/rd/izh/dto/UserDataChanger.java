@@ -34,7 +34,7 @@ public class UserDataChanger {
                 return null;
             }
             user = userRepository.getAuthorizedUserByLogin(user.getLogin());
-        } catch (SQLException | ClassNotFoundException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return user;
@@ -44,7 +44,7 @@ public class UserDataChanger {
         try {
             userRepository.deleteAuthorizedUser(user.getLogin());
             return true;
-        } catch (SQLException | ClassNotFoundException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return false;

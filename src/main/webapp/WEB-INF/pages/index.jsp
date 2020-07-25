@@ -8,6 +8,13 @@
   </head>
 
   <body>
+  <header>
+    <div>
+      <a href="bookform">Добавить книгу</a>
+      <a href="bookedit">Редактировать книгу</a>
+      <a href="checkuserpass">Настройки профиля</a>
+    </div>
+  </header>
     <p>
       ${message}!
     </p>

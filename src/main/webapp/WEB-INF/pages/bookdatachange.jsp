@@ -9,6 +9,13 @@
     <title>Book data change</title>
 </head>
 <body>
+<header>
+    <div>
+        <a href="bookform">Добавить книгу</a>
+        <a>Редактировать книгу</a>
+        <a href="checkuserpass">Настройки профиля</a>
+    </div>
+</header>
     <table>
         <tr>
             <td>Title</td>

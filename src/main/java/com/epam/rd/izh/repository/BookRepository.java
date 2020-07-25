@@ -9,7 +9,9 @@ import java.util.UUID;
 import static com.epam.rd.izh.util.StringConstants.*;
 
 public class BookRepository {
-    public AddedBook getAddedBookByUUID (UUID id) throws SQLException, ClassNotFoundException {
+
+    @Nullable
+    public AddedBook getAddedBookByUUID (UUID id) throws SQLException {
         if (id != null) {
             ResultSet resultSet = null;
             Connection connection = null;
@@ -37,6 +39,7 @@ public class BookRepository {
         return null;
     }
 
+    @Nullable
     public AddedBook getBookByTitleAndAuthor(String title, String author) throws SQLException {
         if (title != null && author != null){
             Connection connection = null;
@@ -65,7 +68,7 @@ public class BookRepository {
         return null;
     }
 
-    public boolean addBook(@Nullable AddedBook book) throws SQLException, ClassNotFoundException {
+    public boolean addBook(@Nullable AddedBook book) throws SQLException {
         if (book != null) {
             Connection connection = null;
             Statement stmt = null;
@@ -103,22 +106,22 @@ public class BookRepository {
                 return true;
             } finally {
 
-                    try {
-                        if (stmt != null) {
+                try {
+                    if (stmt != null) {
                         stmt.close();
-                        }
-                        if (connection != null) {
-                            connection.close();
-                        }
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
                     }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
             }
+        }
         return false;
     }
 
-    public boolean deleteBook(UUID uuid) throws SQLException, ClassNotFoundException {
+    public boolean deleteBook(UUID uuid) throws SQLException {
         if (uuid != null) {
             Connection connection = null;
             Statement stmt = null;
@@ -140,3 +143,4 @@ public class BookRepository {
         return false;
     }
 }
+

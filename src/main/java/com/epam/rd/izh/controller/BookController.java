@@ -1,7 +1,6 @@
 package com.epam.rd.izh.controller;
 
 import com.epam.rd.izh.entity.AddedBook;
-import com.epam.rd.izh.repository.BookRepository;
 import com.epam.rd.izh.service.BookDetailsServiceMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -11,13 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
-import java.sql.SQLException;
 
 @Controller
 public class BookController {
     BookDetailsServiceMapper bookDetailsServiceMapper = new BookDetailsServiceMapper();
     AddedBook objectBook = new AddedBook();
-    BookRepository bookRepository = new BookRepository();
 
     @GetMapping("/bookform")
     public String bookForm(Model model){
@@ -32,11 +29,8 @@ public class BookController {
         if (bindingResult.hasErrors()) {
             return "redirect:/bookform";
         }
-        try {
-            bookRepository.addBook(addedBook);
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
-        }
+        //Возможные проблемы с генерацией UUID а также с валидацией и нуллпоинтерами
+        bookDetailsServiceMapper.BookAdding(addedBook);
         return "redirect:/bookform";
     }
 
@@ -54,13 +48,8 @@ public class BookController {
             return "bookedit";
         }
         if (addedBook.getTitle() != null && addedBook.getAuthor() != null) {
-            try {
-                objectBook = bookRepository.getBookByTitleAndAuthor(addedBook.getTitle(), addedBook.getAuthor());
-                return "redirect:/bookdatachange";
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-                return "bookedit";
-            }
+            objectBook = bookDetailsServiceMapper.getAddedBook(addedBook);
+            return "redirect:/bookdatachange";
         } else {
             return "bookedit";
         }
@@ -81,9 +70,7 @@ public class BookController {
         if (bindingResult.hasErrors()) {
             return "redirect:bookdatachange";
         }
-        System.out.println(objectBook.toString());
         newBook.setId();
-        System.out.println(newBook.toString());
         if(bookDetailsServiceMapper.BookDataChange(objectBook, newBook)){
             objectBook = null;
         } else {

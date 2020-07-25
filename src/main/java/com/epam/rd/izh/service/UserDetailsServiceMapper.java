@@ -7,15 +7,20 @@ import com.epam.rd.izh.repository.UserRepository;
 
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.epam.rd.izh.util.StringConstants.PASSWORD;
 
 /**
  * Для авторизации через Spring security требуется реализация интерфейса UserDetailsService и его метода
@@ -26,8 +31,10 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceMapper implements UserDetailsService {
 
   @Autowired
-  UserRepository userRepository;
-  UserDataChanger userDataChanger;
+  UserRepository userRepository = new UserRepository();
+  @Autowired
+  PasswordEncoder passwordEncoder;
+  UserDataChanger userDataChanger = new UserDataChanger();
 
   /**
    * Данный метод должен вернуть объект User, являющийся пользователем текущей сессии.
@@ -45,7 +52,7 @@ public class UserDetailsServiceMapper implements UserDetailsService {
     AuthorizedUser authorizedUserDto = null;
     try {
       authorizedUserDto = userRepository.getAuthorizedUserByLogin(login);
-    } catch (SQLException | ClassNotFoundException throwables) {
+    } catch (SQLException throwables) {
       throwables.printStackTrace();
     }
     Set<GrantedAuthority> roles = new HashSet<>();
@@ -64,7 +71,7 @@ public class UserDetailsServiceMapper implements UserDetailsService {
    * @param user сущность пользователя
    * @return возвращает true если пользователь успешно добавлен
    */
-  public boolean UserRegistration(AuthorizedUser user) {
+  public boolean userRegistration(AuthorizedUser user) {
     String registerValidateResult = UserValidate.Validate(user);
     if (registerValidateResult == null) {
       return false;
@@ -72,11 +79,41 @@ public class UserDetailsServiceMapper implements UserDetailsService {
     user = userDataChanger.FirstUserCreate(user);
     try {
       userRepository.addAuthorizedUser(user);
-    } catch (SQLException | ClassNotFoundException throwables) {
+    } catch (SQLException throwables) {
       throwables.printStackTrace();
       return false;
     }
     return true;
   }
+
+  public boolean checkPass(String login, String password){
+    try {
+      if (passwordEncoder.matches(password, Objects.requireNonNull(userRepository.getAuthorizedUserByLogin(login)).getPassword())){
+        return true;
+      }
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+    return false;
+  }
+
+  public boolean newChangePass(String username, String password){
+    try {
+      return userRepository.editAuthorizedUser(username, PASSWORD, password);
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+    return false;
+  }
+
+  public boolean DeleteUser(String username){
+    try {
+      return userRepository.deleteAuthorizedUser(username);
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+    return false;
+  }
+
 
 }

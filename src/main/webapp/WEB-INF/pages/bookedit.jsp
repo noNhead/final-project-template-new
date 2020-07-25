@@ -9,6 +9,13 @@
 </head>
 
 <body>
+<header>
+    <div>
+        <a href="bookform">Добавить книгу</a>
+        <a>Редактировать книгу</a>
+        <a href="checkuserpass">Настройки профиля</a>
+    </div>
+</header>
 <form:form action="bookedit/proceed" modelAttribute="bookEdit">
     <p title="Book data change form by title and author">
         Book data change by title and author

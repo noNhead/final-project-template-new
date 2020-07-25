@@ -23,4 +23,5 @@ public class StringConstants {
   public static final String UUIDFORUSER = "UUID";
   public static final String LOGIN = "login";
   public static final String TITLE = "title";
+  public static final String BOOKPATH = "./src/main/webapp/WEB-INF/books/";
 }

@@ -28,7 +28,10 @@ public class AuthorizedUser {
 
   private UUID id;
 
-  public void setId(UUID id) {
+    public AuthorizedUser() {
+    }
+
+    public void setId(UUID id) {
     this.id = id;
   }
 

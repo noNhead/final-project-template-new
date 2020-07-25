@@ -9,6 +9,13 @@
 </head>
 
 <body>
+<header>
+    <div>
+        <a>Добавить книгу</a>
+        <a href="bookedit">Редактировать книгу</a>
+        <a href="checkuserpass">Настройки профиля</a>
+    </div>
+</header>
     <div>
         <form:form action="bookform/proceed" method="post" modelAttribute="bookForm">
             <p title="Book form">Add Book</p>

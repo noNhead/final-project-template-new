@@ -1,6 +1,5 @@
 package com.epam.rd.izh.controller;
 
-import com.epam.rd.izh.dto.UserValidate;
 import com.epam.rd.izh.entity.AuthorizedUser;
 import com.epam.rd.izh.repository.UserRepository;
 import javax.validation.Valid;
@@ -73,7 +72,7 @@ public class AuthenticationController {
     AuthorizedUser authorizedUser;
     try {
       authorizedUser = userRepository.getAuthorizedUserByLogin(loginUser.getLogin());
-    } catch (SQLException | ClassNotFoundException throwables) {
+    } catch (SQLException throwables) {
       throwables.printStackTrace();
       return "redirect:/login";
     }
@@ -112,7 +111,7 @@ public class AuthenticationController {
       return "redirect:/registration";
     }
 
-    if(!userDetailsServiceMapper.UserRegistration(registeredUser)){
+    if(!userDetailsServiceMapper.userRegistration(registeredUser)){
       return "redirect:/registration";
     }
     return "redirect:/login";

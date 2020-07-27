@@ -51,13 +51,13 @@ public class FileRepository {
     /**
      * Возвращает путь до текстового файла, по имени и автору
      *
-     * @param author Автор
      * @param title Название
-     * @return Возвращает строку - путь
+     * @param author Автор
+     * @return Возвращает текстовый файл
      */
-    public File getBookByAuthorAndTitle(String author, String title){
+    public File getBookByAuthorAndTitle(String title, String author){
         char literal = author.charAt(0);
-        return new File(BOOKPATH + literal + "/" + title + "/" + title);
+        return new File(BOOKPATH + literal + "/" + author + "/" + title + "/" + title + ".fb2.zip");
     }
 
     /**
@@ -67,7 +67,7 @@ public class FileRepository {
      * @param title Название
      * @return Возвращает строку - путь
      */
-    public String getPathImageByAuthorAndName(String author, String title){
+    public String getPathImageByTitleAndAuthor(String title, String author){
         char literal = author.charAt(0);
         return BOOKPATH + literal + "/" + title + "/" + title;
     }

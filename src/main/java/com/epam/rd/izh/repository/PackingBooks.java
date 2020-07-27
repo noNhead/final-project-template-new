@@ -1,3 +1,11 @@
+/**
+ * Эксперементальный класс для хранения файлов в архивах с типом сжатия STORED
+ * Теоретически это позволит системе быстрее ориентироваться по базе
+ *
+ */
+
+
+/*
 package com.epam.rd.izh.repository;
 
 import org.springframework.stereotype.Repository;
@@ -19,7 +27,7 @@ public class PackingBooks {
      * Упаковка книг в определённой директории
      *
      * @return возвращает true если упаковка закончилась успешно
-     */
+     *
     public boolean packingBooks(){
         String path = "1.zip";
         File fileDirectory = new File(BOOKPATH);
@@ -71,7 +79,7 @@ public class PackingBooks {
      *
      * @param path путь до архива
      * @return Возвращает список книг в виде List<File>
-     */
+     *
     public List<File> unpackingBooks(String path){
         ZipInputStream zipInputStream = null;
         try {
@@ -106,7 +114,7 @@ public class PackingBooks {
      *
      * @param path путь до архива
      * @return Возвращает список путей до книг в виде List<String>
-     */
+     *
     public List<String> getPathBooksInPack(String path){
         ZipInputStream zipInputStream = null;
         try {
@@ -138,8 +146,9 @@ public class PackingBooks {
      * @param path путь до архива
      * @param title название книги в архиве
      * @return Возвращает File книгу
-     */
+     *
     public File unpackingBook(String path, String title){
         return null;
     }
 }
+*/

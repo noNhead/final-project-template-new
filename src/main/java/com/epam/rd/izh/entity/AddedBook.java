@@ -1,5 +1,6 @@
 package com.epam.rd.izh.entity;
 
+import java.io.File;
 import java.util.UUID;
 
 public class AddedBook {
@@ -7,23 +8,35 @@ public class AddedBook {
     private String author;
     private String genre;
     private String year;
-    private String imgUrl;
     private UUID uuid;
+    private String urlImg;
 
+    private File file;
 
-    public AddedBook(String name, String author, String genre, String year, String imgUrl, UUID uuid) {
-        this.title = name;
+    public AddedBook(String title, String author, String genre, String year, UUID uuid) {
+        this.title = title;
         this.author = author;
-        this.imgUrl = imgUrl;
         this.year = year;
         this.genre = genre;
         this.uuid = uuid;
+        this.urlImg = author.charAt(0) + "/" + author + "/" + title + "/image.jpg";
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public File getFile() {
+        return file;
     }
 
     public AddedBook() {
         this.title = null;
         this.author = null;
-        this.imgUrl = null;
         this.year = null;
         this.genre = null;
         this.uuid = null;
@@ -61,14 +74,6 @@ public class AddedBook {
         this.year = year;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
     public UUID getId() {
         return uuid;
     }
@@ -82,7 +87,6 @@ public class AddedBook {
         return "AddedBook{" +
                 "title='" + title + '\'' +
                 ", author='" + author + '\'' +
-                ", imgUrl='" + imgUrl + '\'' +
                 ", year='" + year + '\'' +
                 ", genre='" + genre + '\'' +
                 ", uuid=" + uuid.toString() +

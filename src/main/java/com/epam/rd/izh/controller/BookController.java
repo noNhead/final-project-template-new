@@ -8,12 +8,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import javax.validation.Valid;
 
 @Controller
 public class BookController {
     BookDetailsServiceMapper bookDetailsServiceMapper = new BookDetailsServiceMapper();
+
     AddedBook objectBook = new AddedBook();
 
     @GetMapping("/bookform")
@@ -24,7 +27,7 @@ public class BookController {
         return "bookform";
     }
 
-    @PostMapping("bookform/proceed")
+    @PostMapping("/bookform/proceed")
     public String processBookAdding(@Valid @ModelAttribute("bookForm") AddedBook addedBook, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return "redirect:/bookform";
@@ -42,7 +45,7 @@ public class BookController {
         return "bookedit";
     }
 
-    @PostMapping("bookedit/proceed")
+    @PostMapping("/bookedit/proceed")
     public String processBookEdit(@Valid @ModelAttribute("bookEdit") AddedBook addedBook, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return "bookedit";
@@ -55,7 +58,7 @@ public class BookController {
         }
     }
 
-    @GetMapping("bookdatachange")
+    @GetMapping("/bookdatachange")
     public String bookDataChange(Model model){
         model.addAttribute("objectBook", objectBook);
         model.addAttribute(new BookController());
@@ -65,7 +68,7 @@ public class BookController {
         return "bookdatachange";
     }
 
-    @PostMapping("bookdatachange/proceed")
+    @PostMapping("/bookdatachange/proceed")
     public String processBookDataChange(@Valid @ModelAttribute("bookDataChange") AddedBook newBook, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return "redirect:bookdatachange";
@@ -79,7 +82,7 @@ public class BookController {
         return "redirect:/bookedit";
     }
 
-    @GetMapping("bookdatachange/delete/process")
+    @GetMapping("/bookdatachange/delete/process")
     public String bookDelete(Authentication authentication){
         if(!bookDetailsServiceMapper.BookDelete(authentication, objectBook)){
             return "redirect:/bookdatachange";
@@ -88,4 +91,17 @@ public class BookController {
         }
         return "redirect:/bookdatachange";
     }
+
+    @GetMapping("/book/{author}/{title}")
+    public String boolTitlePage(Model model, @PathVariable("author") String author, @PathVariable("title") String title){
+        AddedBook book = new AddedBook();
+        System.out.println(author + " " + title);
+        book.setTitle(title);
+        book.setAuthor(author);
+
+        book = bookDetailsServiceMapper.getAddedBook(book);
+        model.addAttribute("book", book);
+        return "book";
+    }
+
 }

@@ -33,14 +33,6 @@
             <td>Year</td>
             <td>${objectBook.getYear()}</td>
         </tr>
-        <tr>
-            <td>Image Url</td>
-            <td>${objectBook.getImgUrl()}</td>
-        </tr>
-        <tr>
-            <td>Image</td>
-            <td><img src="${objectBook.getImgUrl()}" alt=""/></td>
-        </tr>
     </table>
         <form:form action="bookdatachange/proceed" modelAttribute="bookDataChange">
         <p title="Book data change form by title and author">Book data change by title and author</p>
@@ -60,10 +52,6 @@
         <div>
             <label title="Year">Year</label>
             <form:input path="year" id="check_year" title="Year"/>
-        </div>
-        <div>
-            <label title="Genre">Genre</label>
-            <form:input path="imgUrl" id="check_imgUrl" title="imgUrl"/>
         </div>
         <div>
             <button>Confirm</button>

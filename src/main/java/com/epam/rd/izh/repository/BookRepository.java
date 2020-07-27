@@ -4,7 +4,11 @@ import com.epam.rd.izh.entity.AddedBook;
 
 import javax.annotation.Nullable;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.sql.Timestamp;
 
 import static com.epam.rd.izh.util.StringConstants.*;
 
@@ -17,13 +21,13 @@ public class BookRepository {
             Connection connection = null;
             Statement stmt = null;
             try {
-                String requestSql = "SELECT title, author, genre, date, imgUrl FROM finalprojectdatabase.addedbook WHERE UUID = '" + id + "'";
+                String requestSql = "SELECT title, author, genre, date FROM finalprojectdatabase.addedbook WHERE UUID = '" + id + "'";
                 connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
                 stmt = connection.createStatement();
                 resultSet = stmt.executeQuery(requestSql);
                 resultSet.next();
                 return new AddedBook(resultSet.getString(TITLE), resultSet.getString(AUTHOR),
-                        resultSet.getString(GENRE), resultSet.getString(WORDDATE), resultSet.getString(IMGURL), UUID.fromString(resultSet.getString(UUIDFORUSER)));
+                        resultSet.getString(GENRE), resultSet.getString(WORDDATE), UUID.fromString(resultSet.getString(UUIDFORUSER)));
             } finally {
                 if (resultSet != null) {
                     resultSet.close();
@@ -46,13 +50,13 @@ public class BookRepository {
             Statement stmt = null;
             ResultSet resultSet = null;
             try {
-                String requestSql = "SELECT title, author, genre, date, imgUrl, UUID FROM finalprojectdatabase.addedbook WHERE `title` = '" + title + "' AND `author` = '"+ author + "'";
+                String requestSql = "SELECT title, author, genre, date, UUID FROM finalprojectdatabase.addedbook WHERE `title` = '" + title + "' AND `author` = '"+ author + "'";
                 connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
                 stmt = connection.createStatement();
                 resultSet = stmt.executeQuery(requestSql);
                 resultSet.next();
                 return new AddedBook(resultSet.getString(TITLE), resultSet.getString(AUTHOR),
-                        resultSet.getString(GENRE), resultSet.getString(WORDDATE), resultSet.getString(IMGURL), UUID.fromString(resultSet.getString(UUIDFORUSER)));
+                        resultSet.getString(GENRE), resultSet.getString(WORDDATE), UUID.fromString(resultSet.getString(UUIDFORUSER)));
             } finally {
                 if (resultSet != null) {
                     resultSet.close();
@@ -73,7 +77,9 @@ public class BookRepository {
             Connection connection = null;
             Statement stmt = null;
             try {
-                String requestSql = "INSERT INTO finalprojectdatabase.addedbook(title, author, genre, date, imgUrl, UUID) VALUES ('" + book.getTitle() + "', '" + book.getAuthor() + "', '" + book.getGenre() + "', '" + book.getYear() + "', '" + book.getImgUrl() + "', '" + UUID.randomUUID().toString() + "')";
+                LocalDateTime date = LocalDateTime.now();
+                Timestamp timestamp = Timestamp.valueOf(date);
+                String requestSql = "INSERT INTO finalprojectdatabase.addedbook(title, author, genre, date, UUID, dateAdded) VALUES ('" + book.getTitle() + "', '" + book.getAuthor() + "', '" + book.getGenre() + "', '" + book.getYear() + "',  '" + UUID.randomUUID().toString() + "', '" + timestamp + "')";
                 connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
                 stmt = connection.createStatement();
                 stmt.executeUpdate(requestSql);
@@ -95,7 +101,7 @@ public class BookRepository {
             Connection connection = null;
             Statement stmt = null;
             try {
-                String requestSql = "UPDATE finalprojectdatabase.addedbook SET title = '" + newBook.getTitle() + "', author = '" + newBook.getAuthor() + "', genre = '" + newBook.getGenre() + "', date = '" + newBook.getYear() + "', imgUrl = '" + newBook.getImgUrl() + "' WHERE UUID = '" + newBook.getId().toString() + "'";
+                String requestSql = "UPDATE finalprojectdatabase.addedbook SET title = '" + newBook.getTitle() + "', author = '" + newBook.getAuthor() + "', genre = '" + newBook.getGenre() + "', date = '" + newBook.getYear() + "' WHERE UUID = '" + newBook.getId().toString() + "'";
                 try {
                     connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
                     stmt = connection.createStatement();
@@ -141,6 +147,41 @@ public class BookRepository {
             }
         }
         return false;
+    }
+
+    public List<AddedBook> getLastAddedBookByTimestamp(int cardinalityLimit) throws SQLException {
+        if (cardinalityLimit > 0) {
+            Connection connection = null;
+            Statement stmt = null;
+            ResultSet resultSet = null;
+            try {
+                String requestSql = "SELECT title, author, genre, date, UUID, dateAdded FROM finalprojectdatabase.addedbook ORDER BY dateAdded DESC LIMIT " + cardinalityLimit;
+                connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
+                stmt = connection.createStatement();
+                resultSet = stmt.executeQuery(requestSql);
+                List<AddedBook> titleAndAuthor = new ArrayList<>();
+                while (resultSet.next()) {
+                    titleAndAuthor.add(
+                            new AddedBook(resultSet.getString("title"),
+                            resultSet.getString("author"),
+                            resultSet.getString("genre"),
+                            resultSet.getString("date"),
+                            UUID.fromString(resultSet.getString("UUID"))));
+                }
+                return titleAndAuthor;
+            } finally {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if(connection!= null) {
+                    connection.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            }
+        }
+        return null;
     }
 }
 

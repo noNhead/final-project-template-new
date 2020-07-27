@@ -9,13 +9,13 @@
 </head>
 
 <body>
-<header>
-    <div>
-        <a>Добавить книгу</a>
-        <a href="bookedit">Редактировать книгу</a>
-        <a href="checkuserpass">Настройки профиля</a>
-    </div>
-</header>
+    <header>
+        <div>
+            <a>Добавить книгу</a>
+            <a href="bookedit">Редактировать книгу</a>
+            <a href="checkuserpass">Настройки профиля</a>
+        </div>
+    </header>
     <div>
         <form:form action="bookform/proceed" method="post" modelAttribute="bookForm">
             <p title="Book form">Add Book</p>
@@ -36,8 +36,8 @@
                 <form:input path="Year" id="Year" title="Year"/>
             </div>
             <div>
-                <label title="Book image URL">image URL</label>
-                <form:input path="imgUrl" id="check_url" title="img_url"/>
+                <label title="Book">Book</label>
+                <form:input path="file" type="file" title="file"/>
             </div>
             <div>
                 <button>Confirm</button>

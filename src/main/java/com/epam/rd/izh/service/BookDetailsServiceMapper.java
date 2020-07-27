@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -44,9 +45,6 @@ public class BookDetailsServiceMapper {
         if(!newBook.getYear().equals("")){
             book.setYear(newBook.getYear());
         }
-        if(!newBook.getImgUrl().equals("")){
-            book.setImgUrl(newBook.getImgUrl());
-        }
         bookRepository.editBook(book);
         return true;
     }
@@ -74,5 +72,14 @@ public class BookDetailsServiceMapper {
             throwables.printStackTrace();
             return false;
         }
+    }
+
+    public List<AddedBook> lastBookAdded(int listSize){
+        try {
+            return bookRepository.getLastAddedBookByTimestamp(listSize);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -18,5 +19,13 @@
     <p>
       ${message}!
     </p>
+  <table>
+    <c:forEach var="i" items="${listBook}">
+    <tr>
+        <td><img src="${i.getUrlImg()}"></td>
+        <td><a href="${pageContext.request.contextPath}/book/${i.getAuthor()}/${i.getTitle()}">${i.getTitle()}. ${i.getAuthor()}</a></td>
+    </tr>
+    </c:forEach>
+  </table>
   </body>
 </html>

@@ -23,8 +23,7 @@ public class BookDetailsServiceMapper {
             return false;
         } else {
             try {
-                bookRepository.addBook(book);
-                return true;
+                return bookRepository.addBook(book);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
                 return false;
@@ -45,8 +44,7 @@ public class BookDetailsServiceMapper {
         if(!newBook.getYear().equals("")){
             book.setYear(newBook.getYear());
         }
-        bookRepository.editBook(book);
-        return true;
+        return bookRepository.editBook(book);
     }
 
     public AddedBook getAddedBook(AddedBook book) {
@@ -63,11 +61,9 @@ public class BookDetailsServiceMapper {
     public boolean BookDelete(Authentication authentication, AddedBook book){
         try {
             if (!Objects.equals(Objects.requireNonNull(userRepository.getAuthorizedUserByLogin(authentication.getName())).getRole(), "admin")){
-                System.out.println(Objects.requireNonNull(userRepository.getAuthorizedUserByLogin(authentication.getName())).getRole() + "? admin");
                 return false;
             }
-            bookRepository.deleteBook(book.getId());
-            return true;
+            return bookRepository.deleteBook(book.getId());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return false;

@@ -12,36 +12,6 @@ import java.util.UUID;
 import static com.epam.rd.izh.util.StringConstants.*;
 
 public class BookRepository {
-
-    @Nullable
-    public AddedBook getAddedBookByUUID (UUID id) throws SQLException {
-        if (id != null) {
-            ResultSet resultSet = null;
-            Connection connection = null;
-            Statement stmt = null;
-            try {
-                String requestSql = "SELECT * FROM finalprojectdatabase.addedbook WHERE UUID = '" + id + "'";
-                connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
-                stmt = connection.createStatement();
-                resultSet = stmt.executeQuery(requestSql);
-                resultSet.next();
-                return new AddedBook(resultSet.getString(TITLE), resultSet.getString(AUTHOR),
-                        resultSet.getString(GENRE), resultSet.getString(WORDDATE), UUID.fromString(resultSet.getString(UUIDFORUSER)));
-            } finally {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            }
-        }
-        return null;
-    }
-
     @Nullable
     public AddedBook getBookByTitleAndAuthor(String title, String author) throws SQLException {
         if (title != null && author != null){

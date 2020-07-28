@@ -33,7 +33,9 @@ public class BookController {
             return "redirect:/bookform";
         }
         //Возможные проблемы с генерацией UUID а также с валидацией и нуллпоинтерами
-        bookDetailsServiceMapper.BookAdding(addedBook);
+        if (!bookDetailsServiceMapper.BookAdding(addedBook)){
+            return "redirect:/404";
+        }
         return "redirect:/bookform";
     }
 

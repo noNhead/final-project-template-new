@@ -82,4 +82,13 @@ public class BookDetailsServiceMapper {
         }
         return null;
     }
+
+    public List<AddedBook> searchBook(AddedBook book){
+        try {
+            return bookRepository.searchBook(book);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
 }

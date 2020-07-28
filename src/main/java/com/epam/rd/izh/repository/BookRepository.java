@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.sql.Timestamp;
 
 import static com.epam.rd.izh.util.StringConstants.*;
 
@@ -21,7 +20,7 @@ public class BookRepository {
             Connection connection = null;
             Statement stmt = null;
             try {
-                String requestSql = "SELECT title, author, genre, date FROM finalprojectdatabase.addedbook WHERE UUID = '" + id + "'";
+                String requestSql = "SELECT * FROM finalprojectdatabase.addedbook WHERE UUID = '" + id + "'";
                 connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
                 stmt = connection.createStatement();
                 resultSet = stmt.executeQuery(requestSql);
@@ -50,13 +49,17 @@ public class BookRepository {
             Statement stmt = null;
             ResultSet resultSet = null;
             try {
-                String requestSql = "SELECT title, author, genre, date, UUID FROM finalprojectdatabase.addedbook WHERE `title` = '" + title + "' AND `author` = '"+ author + "'";
+                String requestSql = "SELECT * FROM finalprojectdatabase.addedbook WHERE `title` = '" + title + "' AND `author` = '"+ author + "'";
                 connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
                 stmt = connection.createStatement();
                 resultSet = stmt.executeQuery(requestSql);
                 resultSet.next();
-                return new AddedBook(resultSet.getString(TITLE), resultSet.getString(AUTHOR),
-                        resultSet.getString(GENRE), resultSet.getString(WORDDATE), UUID.fromString(resultSet.getString(UUIDFORUSER)));
+                return new AddedBook(
+                        resultSet.getString(TITLE),
+                        resultSet.getString(AUTHOR),
+                        resultSet.getString(GENRE),
+                        resultSet.getString(WORDDATE),
+                        UUID.fromString(resultSet.getString(UUIDFORUSER)));
             } finally {
                 if (resultSet != null) {
                     resultSet.close();
@@ -155,7 +158,7 @@ public class BookRepository {
             Statement stmt = null;
             ResultSet resultSet = null;
             try {
-                String requestSql = "SELECT title, author, genre, date, UUID, dateAdded FROM finalprojectdatabase.addedbook ORDER BY dateAdded DESC LIMIT " + cardinalityLimit;
+                String requestSql = "SELECT * FROM finalprojectdatabase.addedbook ORDER BY dateAdded DESC LIMIT " + cardinalityLimit;
                 connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
                 stmt = connection.createStatement();
                 resultSet = stmt.executeQuery(requestSql);
@@ -170,6 +173,71 @@ public class BookRepository {
                 }
                 return titleAndAuthor;
             } finally {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if(connection!= null) {
+                    connection.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public List<AddedBook> searchBook(AddedBook book) throws SQLException {
+        if (book != null) {
+            Connection connection = null;
+            Statement stmt = null;
+            ResultSet resultSet = null;
+            String requestSql = "SELECT * FROM finalprojectdatabase.addedbook WHERE ";
+            try {
+                boolean t = false;
+                boolean a = false;
+                boolean g = false;
+                if (!book.getTitle().equals("0")) {
+                    requestSql += "title LIKE '%" + book.getTitle() + "%'";
+                    t = true;
+                }
+                if (!book.getAuthor().equals("0")) {
+                    if (t) {
+                        requestSql+=" AND ";
+                    }
+                    requestSql += "author LIKE '%" + book.getAuthor() + "%'";
+                    a = true;
+                }
+                if (!book.getGenre().equals("0")) {
+                    if (a) {
+                        requestSql+=" AND ";
+                    }
+                    requestSql += "genre LIKE '%" + book.getGenre() + "%'";
+                    g = true;
+                }
+                if (!book.getYear().equals("0")) {
+                    if (g) {
+                        requestSql=" AND ";
+                    }
+                    requestSql += "date LIKE '%" + book.getYear() + "%'";
+                }
+                connection = DriverManager.getConnection(URL_DATABASE, ROOT_LOGIN, ROOT_PASS);
+                stmt = connection.createStatement();
+                resultSet = stmt.executeQuery(requestSql);
+                List<AddedBook> bookList = new ArrayList<>();
+                while (resultSet.next()) {
+                    bookList.add(new AddedBook(
+                            resultSet.getString("title"),
+                            resultSet.getString("author"),
+                            resultSet.getString("genre"),
+                            resultSet.getString("date"),
+                            UUID.fromString(resultSet.getString("UUID"))));
+
+                }
+                return bookList;
+            } finally {
+                System.out.println(requestSql);
                 if (resultSet != null) {
                     resultSet.close();
                 }

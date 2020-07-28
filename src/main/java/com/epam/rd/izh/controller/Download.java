@@ -16,7 +16,7 @@ public class Download extends HttpServlet {
     public static final int BUFFER_SIZE = 1024 * 1024 * 20;
 
     @GetMapping("/book/download/{author}/{title}")
-    public void doGet(HttpServletResponse httpServletResponse, @PathVariable String author, @PathVariable String title){
+    public void download(HttpServletResponse httpServletResponse, @PathVariable String author, @PathVariable String title){
 
         String downloadTitle = title + ".fb2.zip";
         httpServletResponse.setCharacterEncoding("UTF-8");

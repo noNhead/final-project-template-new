@@ -19,7 +19,7 @@ public class AddedBook {
         this.year = year;
         this.genre = genre;
         this.uuid = uuid;
-        this.urlImg = author.charAt(0) + "/" + author + "/" + title + "/image.jpg";
+        this.urlImg = "/books/" + author.charAt(0) + "/" + author + "/" + title + "/image.jpg";
     }
 
     public void setFile(File file) {

@@ -2,7 +2,6 @@ package com.epam.rd.izh.controller;
 
 import com.epam.rd.izh.entity.AddedBook;
 import com.epam.rd.izh.service.BookDetailsServiceMapper;
-import com.google.gson.Gson;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,10 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -29,18 +25,21 @@ public class Search extends HttpServlet {
         if(!model.containsAttribute("searchForm")) {
             model.addAttribute("searchForm", new AddedBook());
         }
+
+        model.addAttribute("listBook", bookDetailsServiceMapper.lastBookAdded(20));
         return "search";
     }
 
     @GetMapping("/search/{tags}")
-    public String searchPage(Model model, HttpServletResponse httpServletResponse, @PathVariable String tags){
+    public String searchPage(Model model, @PathVariable String tags){
         if(!model.containsAttribute("searchForm")){
             model.addAttribute("searchForm", new AddedBook());
         }
-        AddedBook book = tagsPars(tags);
-        processRequest(httpServletResponse, bookDetailsServiceMapper.searchBook(book));
-        return "search";
 
+        AddedBook book = tagsPars(tags);
+        List<AddedBook> listBook = bookDetailsServiceMapper.searchBook(book);
+        model.addAttribute("listBook", listBook);
+        return "search";
     }
 
     private AddedBook tagsPars(String tags){
@@ -100,7 +99,7 @@ public class Search extends HttpServlet {
     }
 
     @PostMapping("/search")
-    public String searchPagePost(@Valid @ModelAttribute("searchForm") AddedBook book, BindingResult bindingResult, HttpServletResponse httpServletResponse){
+    public String searchPagePost(@Valid @ModelAttribute("searchForm") AddedBook book, BindingResult bindingResult){
         if(bindingResult.hasErrors()) {
             System.out.println("Pikachu");
         }
@@ -110,17 +109,5 @@ public class Search extends HttpServlet {
             e.printStackTrace();
         }
         return "redirect:/search";
-    }
-
-    protected void processRequest(HttpServletResponse httpServletResponse, List<AddedBook> list){
-        httpServletResponse.setContentType("application/json");
-        httpServletResponse.setCharacterEncoding("utf-8");
-        try (PrintWriter out = httpServletResponse.getWriter()){
-            String json = new Gson().toJson(list);
-            System.out.println(json);
-            out.print(json);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -22,8 +22,9 @@
   <table>
     <c:forEach var="i" items="${listBook}">
     <tr>
-        <td><img src="${i.getUrlImg()}"></td>
-        <td><a href="${pageContext.request.contextPath}/book/${i.getAuthor()}/${i.getTitle()}">${i.getTitle()}. ${i.getAuthor()}</a></td>
+        <td><img src="${i.getUrlImg()}"/></td>
+        <td><a href="${pageContext.request.contextPath}/book/${i.getAuthor()}/${i.getTitle()}">${i.getTitle()} ${i.getAuthor()}</a></td>
+        <td><p>${i.getGenre()}</p></td>
     </tr>
     </c:forEach>
   </table>

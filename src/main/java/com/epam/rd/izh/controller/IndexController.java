@@ -11,7 +11,6 @@ import static com.epam.rd.izh.util.StringConstants.ENG_GREETING;
 
 @Controller
 public class IndexController {
-  private final int numberOfIndexSize = 10;
   BookDetailsServiceMapper bookDetailsServiceMapper = new BookDetailsServiceMapper();
 
   @GetMapping("/")
@@ -20,6 +19,7 @@ public class IndexController {
     greetingMessage.setMessage(ENG_GREETING + authentication.getName());
 
     model.addAttribute("message", greetingMessage.getMessage());
+    int numberOfIndexSize = 10;
     model.addAttribute("listBook", bookDetailsServiceMapper.lastBookAdded(numberOfIndexSize));
     return "index";
   }

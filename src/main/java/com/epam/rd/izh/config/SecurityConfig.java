@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/js/**").permitAll()
         .antMatchers("/images/**").permitAll()
         .antMatchers("/fonts/**").permitAll()
+            .antMatchers("/books/**").permitAll()
 
         /**
          * Любой реквест, кроме перечисленных выше, доступен лишь авторизованному пользователю.

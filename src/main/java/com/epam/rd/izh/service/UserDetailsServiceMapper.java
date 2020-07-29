@@ -1,16 +1,9 @@
 package com.epam.rd.izh.service;
 
-import com.epam.rd.izh.dto.UserDataChanger;
 import com.epam.rd.izh.dto.UserValidate;
 import com.epam.rd.izh.entity.AuthorizedUser;
 import com.epam.rd.izh.repository.UserRepository;
-
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,6 +12,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 import static com.epam.rd.izh.util.StringConstants.PASSWORD;
 
@@ -32,9 +30,9 @@ public class UserDetailsServiceMapper implements UserDetailsService {
 
   @Autowired
   UserRepository userRepository = new UserRepository();
+
   @Autowired
-  PasswordEncoder passwordEncoder;
-  UserDataChanger userDataChanger = new UserDataChanger();
+  private PasswordEncoder passwordEncoder;
 
   /**
    * Данный метод должен вернуть объект User, являющийся пользователем текущей сессии.
@@ -76,7 +74,8 @@ public class UserDetailsServiceMapper implements UserDetailsService {
     if (registerValidateResult == null) {
       return false;
     }
-    user = userDataChanger.FirstUserCreate(user);
+    user.setRole("user");
+    user.setId(UUID.randomUUID());
     try {
       userRepository.addAuthorizedUser(user);
     } catch (SQLException throwables) {
@@ -87,9 +86,17 @@ public class UserDetailsServiceMapper implements UserDetailsService {
   }
 
   public boolean checkPass(String login, String password){
+    System.out.println(password + login);
     try {
-      if (passwordEncoder.matches(password, Objects.requireNonNull(userRepository.getAuthorizedUserByLogin(login)).getPassword())){
-        return true;
+      if (password == null && login == null) {
+        return false;
+      }
+      AuthorizedUser authorizedUser = userRepository.getAuthorizedUserByLogin(login);
+      System.out.println(authorizedUser.getPassword());
+      if (authorizedUser != null) {
+        if (passwordEncoder.matches(password, authorizedUser.getPassword())){
+          return true;
+        }
       }
     } catch (SQLException throwables) {
       throwables.printStackTrace();
@@ -114,6 +121,5 @@ public class UserDetailsServiceMapper implements UserDetailsService {
     }
     return false;
   }
-
 
 }

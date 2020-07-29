@@ -32,16 +32,16 @@ public class BookDetailsServiceMapper {
     }
 
     public boolean BookDataChange(AddedBook book, AddedBook newBook) {
-        if(!newBook.getTitle().equals("")){
+        if(!newBook.getTitle().equals("0&")){
             book.setTitle(newBook.getTitle());
         }
-        if(!newBook.getAuthor().equals("")){
+        if(!newBook.getAuthor().equals("0&")){
             book.setAuthor(newBook.getAuthor());
         }
-        if(!newBook.getGenre().equals("")){
+        if(!newBook.getGenre().equals("0&")){
             book.setGenre(newBook.getGenre());
         }
-        if(!newBook.getYear().equals("")){
+        if(!newBook.getYear().equals("0&")){
             book.setYear(newBook.getYear());
         }
         return bookRepository.editBook(book);

@@ -1,0 +1,49 @@
+html {
+    font-size: 14px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: rgba(48, 53, 53, 0.808);
+    z-index: 20;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 5vh;
+}
+
+.headerHref {
+    font-size: 4vh;
+    color: aliceblue;
+}
+
+.headerHrefDiv {
+    margin: 0 1vh 0 1vh;
+}
+
+a {
+    text-decoration: none;
+}
+
+.mainSpace {
+    margin: 3vw 33vh 0 33vh;
+    font-size: 4vh;
+
+}
+
+.subName {
+    font-size: 0.6em;
+    text-align: right;
+}
+
+.subNameValue {
+    font-size: 0.7em;
+}
+
+.headName {
+    text-align: center;
+}

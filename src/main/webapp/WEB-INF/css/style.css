@@ -4,6 +4,25 @@ body {
     font-size: 27px;
 }
 
+header {
+    background-color: rgba(48, 53, 53, 0.808);
+    z-index: 20;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 5vh;
+}
+
+footer {
+    background-color: rgb(44, 44, 44);
+    bottom: 0;
+    z-index: 20;
+    width: 100%;
+    color: aliceblue;
+    font-size: 14px;
+    height: 3vh;
+}
+
 .t_font_link {
    font-family: 'Roboto', sans-serif;
    font-size: 24px;
@@ -24,27 +43,7 @@ body {
     background-color: black;
     border-style: solid;
     text-align: center;
-    width: 250px;
     width: 50px;
-}
-
-header {
-    background-color: rgba(48, 53, 53, 0.808);
-    z-index: 20;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    height: 5vh;
-}
-
-footer {
-    background-color: rgb(44, 44, 44);
-    bottom: 0;
-    z-index: 20;
-    width: 100%;
-    color: aliceblue;
-    font-size: 14px;
-    height: 3vh;
 }
 
 .login {

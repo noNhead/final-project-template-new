@@ -5,58 +5,44 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Sign up</title>
     <script type="text/javascript" src="./js/main.js"></script>
-    <title>library - login</title>
-    <style><%@include file="/WEB-INF/css/style.css"%></style>
+    <title>Вход</title>
+    <style><%@include file="/WEB-INF/css/index.css"%></style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   </head>
 
   <body>
-  <div class="container">
   <header>
-    <!--<div class="logo navigationElement"><img src="" alt=""></div>-->
-    <div class="navigationElement t_font_link"><a href="" class="navLink">Главная</a></div>
-    <div class="navigationElement t_font_link"><a href="" class="navLink">Книги</a></div>
-    <div class="navigationElement t_font_link"><a href="" class="navLink">Авторы</a></div>
-    <div class="t_font_link login"><a href="" class="navLink">Войти</a></div>
-    <div class="navigationElement t_font_link"></div>
-  </header>
-    <div class="mainPage">
-      <div class="leftNavigation"></div>
-      <div class="page">
-        <div class="loginForm">
-          <div class="subRegForm">
-    <form:form action="login/process" method="post" modelAttribute="loginForm">
-      <p title="Login form">Sign up</p>
-      <div class="group">
-        <label for="">Login</label>
-        <form:input path="login" id="check_login" name="login" />
-      </div>
-
-      <div class="group">
-        <label for="">Password</label>
-        <form:input path="password" id="check_password" name="password" type="password" />
-        <div class="error">${error_login_placeholder}</div>
-      </div>
-
-
-      <div class="group">
-        <button class="button">Confirm</button>
-      </div>
-    </form:form>
-
-    <form action="registration" method="get">
-      <div>
-        <button class="button">registration</button>
-      </div>
-    </form>
-          </div>
-        </div>
-      </div>
-      <div class="rightNavigation"></div>
+    <div class="headerHrefDiv">
+      <a class="headerHref" href="${pageContext.request.contextPath}/search">Поиск</a>
     </div>
-    <footer><!--<div class="arr">All Rights Reserved</div>--></footer>
+    <div class="headerHrefDiv">
+      <a class="headerHref" href="${pageContext.request.contextPath}/bookedit">Редактировать</a>
+    </div>
+    <div class="headerHrefDiv">
+      <a class="headerHref" href="${pageContext.request.contextPath}/userdatachange">Профиль</a>
+    </div>
+  </header>
+  <div class="mainSpace">
+
+    <table>
+      <form:form action="login/process" method="post" modelAttribute="loginForm">
+      <tr><td class="headName"><p title="Login form">Войти</p></td></tr>
+      <tr><td><table>
+        <tr>
+          <td class="subName"><label for="">Логин</label></td>
+          <td><form:input path="login" id="check_login" name="login" /></td>
+        </tr>
+        <tr>
+          <td class="subName"><label for="">Пароль</label></td>
+          <td><form:input path="password" id="check_password" name="password" type="password" /></td>
+        </tr>
+        <tr><td class="subName"><div class="error">${error_login_placeholder}</div></td></tr>
+        <tr><td></td><td><button class="button">Войти</button></td></tr>
+        </form:form>
+        <tr><td></td><td><form action="registration" method="get"><button class="button">Регистрация</button></form></td></tr>
+      </table></td></tr>
+    </table>
   </div>
   </body>
 </html>

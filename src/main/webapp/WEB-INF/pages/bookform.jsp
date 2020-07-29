@@ -1,48 +1,56 @@
 <!DOCTYPE html>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="input" uri="http://www.springframework.org/tags/form" %>
 
-<html lang="en" dir="ltr">
+<html lang="ru" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title>Adding a book</title>
+    <title>Добавить книгу</title>
+    <style><%@include file="/WEB-INF/css/index.css"%></style>
 </head>
 
 <body>
-    <header>
-        <div>
-            <a>Добавить книгу</a>
-            <a href="bookedit">Редактировать книгу</a>
-            <a href="checkuserpass">Настройки профиля</a>
-        </div>
-    </header>
-    <div>
-        <form:form action="bookform/proceed" method="post" modelAttribute="bookForm">
-            <p title="Book form">Add Book</p>
-            <div class="group">
-                <label title="Book title">Book title</label>
-                <form:input path="title" id="check_title" title="Title"/>
-            </div>
-            <div class="group">
-                <label title="Book author">Book author</label>
-                <form:input path="author" id="check_author" title="Author"/>
-            </div>
-            <div class="group">
-                <label title="Book genre">Book genre</label>
-                <form:input path="genre" id="check_genre" title="Genre"/>
-            </div>
-            <div class="group">
-                <label title="Book date">Book date</label>
-                <form:input path="Year" id="Year" title="Year"/>
-            </div>
-            <div>
-                <label title="Book">Book</label>
-                <form:input path="file" type="file" title="file"/>
-            </div>
-            <div>
-                <button>Confirm</button>
-            </div>
-        </form:form>
+<header>
+    <div class="headerHrefDiv">
+        <a class="headerHref" href="${pageContext.request.contextPath}/search">Поиск</a>
     </div>
+    <div class="headerHrefDiv">
+        <a class="headerHref" href="${pageContext.request.contextPath}/bookedit">Редактировать</a>
+    </div>
+    <div class="headerHrefDiv">
+        <a class="headerHref" href="${pageContext.request.contextPath}/userdatachange">Профиль</a>
+    </div>
+</header>
+<div class="mainSpace">
+    <form:form action="bookform/proceed" method="post" modelAttribute="bookForm">
+        <table>
+            <tr><td><p title="Book form">Заполните все данные</p></td></tr>
+            <tr><td><table>
+                <tr>
+                    <td class="subName"><label title="Book title">Название книги:</label></td>
+                    <td><input:form path="title" id="check_title" title="Title"/></td>
+                </tr>
+                <tr>
+                    <td class="subName"><label title="Book author">Полное имя автора:</label></td>
+                    <td><input:form path="author" id="check_author" title="Author"/></td>
+                </tr>
+                <tr>
+                    <td class="subName"><label title="Book genre">Жанры, через пробел:</label></td>
+                    <td><input:form path="genre" id="check_genre" title="Genre"/></td>
+                </tr>
+                <tr>
+                    <td class="subName"><label title="Book date">Год написания (ГГГГ):</label></td>
+                    <td><input:form path="Year" id="Year" title="Year"/></td>
+                </tr>
+                <tr>
+                    <td class="subName"><label title="Book">Сам текстовый файл</label></td>
+                    <td><input path="file" type="file" title="file"/></td>
+                </tr>
+                <tr><td></td><td><button>Confirm</button></td></tr>
+            </table></td></tr>
+        </table>
+    </form:form>
+</div>
 </body>
 </html>

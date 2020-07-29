@@ -5,42 +5,30 @@ import com.epam.rd.izh.service.UserDetailsServiceMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
 public class ChangeDataUserController {
     UserDetailsServiceMapper userDetailsServiceMapper = new UserDetailsServiceMapper();
 
-    @GetMapping("/checkuserpass")
-    public String checkUserPass(ModelMap model){
-        if (!model.containsAttribute("checkUserPass")){
-            model.addAttribute("checkUserPass", new AuthorizedUser());
-        }
-        return "checkuserpass";
-    }
-
-    @PostMapping("/checkuserpass/proceed")
-    public String processCheckUserPass(@Valid @ModelAttribute("checkUserPass") AuthorizedUser authorizedUser, BindingResult bindingResult, Authentication authentication){
-        if(bindingResult.hasErrors()){
-            return "redirect:/checkuserpass";
-        }
-        if(!userDetailsServiceMapper.checkPass(authentication.getName(), authorizedUser.getPassword())){
-            return "redirect:/checkuserpass";
-        }
-        return "redirect:/userdatachange";
-    }
-
     @GetMapping("/userdatachange")
-    public String userDataChange(Model model){
-        if(!model.containsAttribute("userDataChange")){
-            model.addAttribute("userDataChange", new AuthorizedUser());
+    public String userDataChange(Model model, HttpServletRequest httpServletRequest){
+        String referer = httpServletRequest.getHeader("Referer");
+        if(referer != null){
+            if (referer.contains("checkuserpass") || referer.contains("userdatachange")) {
+                if(!model.containsAttribute("userDataChange")){
+                    model.addAttribute("userDataChange", new AuthorizedUser());
+                }
+                return "userdatachange";
+            }
         }
-        return "userdatachange";
+        return "redirect:/checkuserpass";
     }
 
     @PostMapping("/userdatachange/proceed")

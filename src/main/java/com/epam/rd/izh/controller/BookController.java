@@ -32,7 +32,6 @@ public class BookController {
         if (bindingResult.hasErrors()) {
             return "redirect:/bookform";
         }
-        //Возможные проблемы с генерацией UUID а также с валидацией и нуллпоинтерами
         if (!bookDetailsServiceMapper.BookAdding(addedBook)){
             return "redirect:/404";
         }
@@ -56,7 +55,7 @@ public class BookController {
             objectBook = bookDetailsServiceMapper.getAddedBook(addedBook);
             return "redirect:/bookdatachange";
         } else {
-            return "bookedit";
+            return "redirect:/bookedit";
         }
     }
 
@@ -76,6 +75,18 @@ public class BookController {
             return "redirect:bookdatachange";
         }
         newBook.setId();
+        if (newBook.getTitle() == null) {
+                newBook.setTitle("0&");
+        }
+        if (newBook.getAuthor() == null) {
+            newBook.setAuthor("0&");
+        }
+        if (newBook.getGenre() == null) {
+            newBook.setGenre("0&");
+        }
+        if (newBook.getYear() == null) {
+            newBook.setYear("0&");
+        }
         if(bookDetailsServiceMapper.BookDataChange(objectBook, newBook)){
             objectBook = null;
         } else {

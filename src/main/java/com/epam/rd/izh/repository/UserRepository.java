@@ -1,15 +1,12 @@
 package com.epam.rd.izh.repository;
 
 import com.epam.rd.izh.entity.AuthorizedUser;
-
-import java.sql.*;
-import java.util.UUID;
-
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.springframework.stereotype.Repository;
+import java.sql.*;
+import java.util.UUID;
 
 import static com.epam.rd.izh.util.StringConstants.*;
 

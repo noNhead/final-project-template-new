@@ -2,20 +2,20 @@ package com.epam.rd.izh.controller;
 
 import com.epam.rd.izh.entity.AuthorizedUser;
 import com.epam.rd.izh.repository.UserRepository;
-import javax.validation.Valid;
-
 import com.epam.rd.izh.service.UserDetailsServiceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.sql.SQLException;
 
 /**
@@ -33,7 +33,7 @@ public class AuthenticationController {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  UserDetailsServiceMapper userDetailsServiceMapper;
+  UserDetailsServiceMapper userDetailsServiceMapper = new UserDetailsServiceMapper();
 
   /**
    * Метод, отвечающий за логику авторизации пользователя.
@@ -102,7 +102,7 @@ public class AuthenticationController {
    */
   @PostMapping("/registration/proceed")
   public String processRegistration(@Valid @ModelAttribute("registrationForm") AuthorizedUser registeredUser,
-      BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+      BindingResult bindingResult) {
 
     if (bindingResult.hasErrors()) {
       //логика отображения ошибки, не является обязательной
@@ -111,12 +111,35 @@ public class AuthenticationController {
       return "redirect:/registration";
     }
 
-    if(!userDetailsServiceMapper.userRegistration(registeredUser)){
-      return "redirect:/registration";
+    if(registeredUser != null){
+      registeredUser.setPassword(passwordEncoder.encode(registeredUser.getPassword()));
+      if(userDetailsServiceMapper.userRegistration(registeredUser)){
+        return "redirect:/login";
+      }
     }
-    return "redirect:/login";
+    return "redirect:/registration";
   }
 
+  @GetMapping("/checkuserpass")
+  public String checkUserPass(ModelMap model){
+    if (!model.containsAttribute("checkUserPass")){
+      model.addAttribute("checkUserPass", new AuthorizedUser());
+    }
+    return "checkuserpass";
+  }
 
-
+  @PostMapping("/checkuserpass/proceed")
+  public String processCheckUserPass(@Valid @ModelAttribute("checkUserPass") AuthorizedUser authorizedUser, BindingResult bindingResult, Authentication authentication){
+    if(bindingResult.hasErrors()){
+      return "redirect:/checkuserpass";
+    }
+    if (authorizedUser.getPassword() == null) {
+      return "redirect:/userdatachange";
+    }
+    System.out.println(authentication.getName() + authorizedUser.getPassword());
+    if(!passwordEncoder.matches(authorizedUser.getPassword(), userDetailsServiceMapper.loadUserByUsername(authentication.getName()).getPassword())){
+      return "redirect:/checkuserpass";
+    }
+    return "redirect:/userdatachange";
+  }
 }

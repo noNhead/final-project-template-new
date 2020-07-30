@@ -12,6 +12,13 @@ import java.util.UUID;
 import static com.epam.rd.izh.util.StringConstants.*;
 
 public class BookRepository {
+    /**
+     * Поиск книги по Названию и пользователю в базе
+     * @param title название
+     * @param author автора
+     * @return возвращает сущности книги
+     * @throws SQLException
+     */
     @Nullable
     public AddedBook getBookByTitleAndAuthor(String title, String author) throws SQLException {
         if (title != null && author != null){
@@ -45,6 +52,12 @@ public class BookRepository {
         return null;
     }
 
+    /**
+     * Добавлеяет книгу в базу
+     * @param book
+     * @return
+     * @throws SQLException
+     */
     public boolean addBook(@Nullable AddedBook book) throws SQLException {
         if (book != null) {
             Connection connection = null;
@@ -69,6 +82,11 @@ public class BookRepository {
         return false;
     }
 
+    /**
+     * Редактирует книгу в базе
+     * @param newBook
+     * @return
+     */
     public boolean editBook(AddedBook newBook) {
         if (newBook != null) {
             Connection connection = null;
@@ -100,6 +118,12 @@ public class BookRepository {
         return false;
     }
 
+    /**
+     * Удаляет книгу из базы
+     * @param uuid
+     * @return
+     * @throws SQLException
+     */
     public boolean deleteBook(UUID uuid) throws SQLException {
         if (uuid != null) {
             Connection connection = null;
@@ -122,6 +146,12 @@ public class BookRepository {
         return false;
     }
 
+    /**
+     * Ищет книги последние добавленные книги по количеству
+     * @param cardinalityLimit по этому количеству
+     * @return
+     * @throws SQLException
+     */
     public List<AddedBook> getLastAddedBookByTimestamp(int cardinalityLimit) throws SQLException {
         if (cardinalityLimit > 0) {
             Connection connection = null;
@@ -157,6 +187,12 @@ public class BookRepository {
         return null;
     }
 
+    /**
+     * Ищет книги по заданном параметрам
+     * @param book
+     * @return
+     * @throws SQLException
+     */
     @Nullable
     public List<AddedBook> searchBook(AddedBook book) throws SQLException {
         if (book != null) {

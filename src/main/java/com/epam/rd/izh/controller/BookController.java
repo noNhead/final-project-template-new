@@ -19,6 +19,9 @@ public class BookController {
 
     AddedBook objectBook = new AddedBook();
 
+    /**
+     * Метод отвечающий за добавление книги
+     */
     @GetMapping("/bookform")
     public String bookForm(Model model){
         if (!model.containsAttribute("bookForm")){
@@ -27,17 +30,24 @@ public class BookController {
         return "bookform";
     }
 
+    /**
+     * Метод отвечающий за добавление книги
+     */
     @PostMapping("/bookform/proceed")
     public String processBookAdding(@Valid @ModelAttribute("bookForm") AddedBook addedBook, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return "redirect:/bookform";
         }
-        if (!bookDetailsServiceMapper.BookAdding(addedBook)){
+
+        if (!bookDetailsServiceMapper.bookAdding(addedBook)){
             return "redirect:/404";
         }
         return "redirect:/bookform";
     }
 
+    /**
+     * Поиск книги перед редактированием по Названию и Автору
+     */
     @GetMapping("/bookedit")
     public String bookEdit(Model model){
         if (!model.containsAttribute("bookEdit")){
@@ -46,6 +56,9 @@ public class BookController {
         return "bookedit";
     }
 
+    /**
+     * Поиск книги перед редактированием по Названию и Автору
+     */
     @PostMapping("/bookedit/proceed")
     public String processBookEdit(@Valid @ModelAttribute("bookEdit") AddedBook addedBook, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
@@ -59,6 +72,9 @@ public class BookController {
         }
     }
 
+    /**
+     * Редактирование данных книги
+     */
     @GetMapping("/bookdatachange")
     public String bookDataChange(Model model){
         model.addAttribute("objectBook", objectBook);
@@ -68,7 +84,9 @@ public class BookController {
         }
         return "bookdatachange";
     }
-
+    /**
+     * Редактирование данных книги
+     */
     @PostMapping("/bookdatachange/proceed")
     public String processBookDataChange(@Valid @ModelAttribute("bookDataChange") AddedBook newBook, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
@@ -87,7 +105,7 @@ public class BookController {
         if (newBook.getYear() == null) {
             newBook.setYear("0&");
         }
-        if(bookDetailsServiceMapper.BookDataChange(objectBook, newBook)){
+        if(bookDetailsServiceMapper.bookDataChange(objectBook, newBook)){
             objectBook = null;
         } else {
             return "redirect:/bookdatachange";
@@ -95,20 +113,24 @@ public class BookController {
         return "redirect:/bookedit";
     }
 
+    /**
+     * Удаление книги, если есть права администратора
+     */
     @GetMapping("/bookdatachange/delete/process")
     public String bookDelete(Authentication authentication){
-        if(!bookDetailsServiceMapper.BookDelete(authentication, objectBook)){
+        if(!bookDetailsServiceMapper.bookDelete(authentication, objectBook)){
             return "redirect:/bookdatachange";
         } else {
             objectBook = null;
         }
         return "redirect:/bookdatachange";
     }
-
+    /**
+     * Удаление книги, если есть права администратора
+     */
     @GetMapping("/book/{author}/{title}")
     public String boolTitlePage(Model model, @PathVariable("author") String author, @PathVariable("title") String title){
         AddedBook book = new AddedBook();
-        System.out.println(author + " " + title);
         book.setTitle(title);
         book.setAuthor(author);
 

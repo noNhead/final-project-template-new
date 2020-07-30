@@ -3,6 +3,8 @@ package com.epam.rd.izh.service;
 import com.epam.rd.izh.dto.UserValidate;
 import com.epam.rd.izh.entity.AuthorizedUser;
 import com.epam.rd.izh.repository.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +12,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -28,22 +29,17 @@ import static com.epam.rd.izh.util.StringConstants.PASSWORD;
 @Service
 public class UserDetailsServiceMapper implements UserDetailsService {
 
+  private static final Logger LOGGER = LogManager.getLogger();
+
   @Autowired
   UserRepository userRepository = new UserRepository();
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
   /**
-   * Данный метод должен вернуть объект User, являющийся пользователем текущей сессии.
-   * Реализация данного метода включает маппинг, т.е. преобразование бизнес-объекта AuthorizedUser в
-   * системный объект Spring приложения User.
-   *
-   * Рекомендуется внедрить логику, реагирующую на возможные нуллы в методах-геттерах.
-   * Пример хорошего кода - логирование или выброс исключения, если наполнение поля объекта критично
-   * (например отсутствует роль пользователя).
+   * Возвращает сущность пользователя
+   * @param login
+   * @return
+   * @throws UsernameNotFoundException
    */
-
   @Override
   public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 
@@ -51,7 +47,7 @@ public class UserDetailsServiceMapper implements UserDetailsService {
     try {
       authorizedUserDto = userRepository.getAuthorizedUserByLogin(login);
     } catch (SQLException throwables) {
-      throwables.printStackTrace();
+      LOGGER.fatal(throwables.getMessage());
     }
     Set<GrantedAuthority> roles = new HashSet<>();
     roles.add(new SimpleGrantedAuthority(authorizedUserDto.getRole()));
@@ -79,45 +75,37 @@ public class UserDetailsServiceMapper implements UserDetailsService {
     try {
       userRepository.addAuthorizedUser(user);
     } catch (SQLException throwables) {
-      throwables.printStackTrace();
+      LOGGER.fatal(throwables.getMessage());
       return false;
     }
     return true;
   }
 
-  public boolean checkPass(String login, String password){
-    System.out.println(password + login);
-    try {
-      if (password == null && login == null) {
-        return false;
-      }
-      AuthorizedUser authorizedUser = userRepository.getAuthorizedUserByLogin(login);
-      System.out.println(authorizedUser.getPassword());
-      if (authorizedUser != null) {
-        if (passwordEncoder.matches(password, authorizedUser.getPassword())){
-          return true;
-        }
-      }
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
-    }
-    return false;
-  }
-
+  /**
+   * Изменяет пароль
+   * @param username
+   * @param password
+   * @return
+   */
   public boolean newChangePass(String username, String password){
     try {
       return userRepository.editAuthorizedUser(username, PASSWORD, password);
     } catch (SQLException throwables) {
-      throwables.printStackTrace();
+      LOGGER.fatal(throwables.getMessage());
     }
     return false;
   }
 
+  /**
+   * Удаляет пользователя
+   * @param username
+   * @return
+   */
   public boolean DeleteUser(String username){
     try {
       return userRepository.deleteAuthorizedUser(username);
     } catch (SQLException throwables) {
-      throwables.printStackTrace();
+      LOGGER.fatal(throwables.getMessage());
     }
     return false;
   }

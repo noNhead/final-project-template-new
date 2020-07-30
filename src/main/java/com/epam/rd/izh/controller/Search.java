@@ -2,6 +2,8 @@ package com.epam.rd.izh.controller;
 
 import com.epam.rd.izh.entity.AddedBook;
 import com.epam.rd.izh.service.BookDetailsServiceMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,8 +20,12 @@ import java.util.List;
 
 @Controller
 public class Search extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger();
     BookDetailsServiceMapper bookDetailsServiceMapper = new BookDetailsServiceMapper();
 
+    /**
+     * Метод поиска
+     */
     @GetMapping("/search")
     public String searchPageWithoutParams(Model model){
         if(!model.containsAttribute("searchForm")) {
@@ -30,6 +36,9 @@ public class Search extends HttpServlet {
         return "search";
     }
 
+    /**
+     * Метод поиска
+     */
     @GetMapping("/search/{tags}")
     public String searchPage(Model model, @PathVariable String tags){
         if(!model.containsAttribute("searchForm")){
@@ -42,6 +51,9 @@ public class Search extends HttpServlet {
         return "search";
     }
 
+    /**
+     * Дробление тегов для поиска
+     */
     private AddedBook tagsPars(String tags){
         AddedBook book = new AddedBook();
         StringBuilder string = new StringBuilder();
@@ -94,10 +106,12 @@ public class Search extends HttpServlet {
         } else {
             book.setYear("0");
         }
-        System.out.println(book.getTitle()+book.getAuthor()+book.getGenre()+book.getYear());
         return book;
     }
 
+    /**
+     * Метод поиска
+     */
     @PostMapping("/search")
     public String searchPagePost(@Valid @ModelAttribute("searchForm") AddedBook book, BindingResult bindingResult){
         if(bindingResult.hasErrors()) {
@@ -106,7 +120,7 @@ public class Search extends HttpServlet {
         try {
             return "redirect:/search/t="+ URLEncoder.encode(book.getTitle(), "UTF-8")+"a="+URLEncoder.encode(book.getAuthor(), "UTF-8")+"g="+URLEncoder.encode(book.getGenre(), "UTF-8")+"d="+URLEncoder.encode(book.getYear(), "UTF-8")+"&";
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.fatal(e.getMessage());
         }
         return "redirect:/search";
     }

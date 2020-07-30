@@ -22,6 +22,7 @@ public class AddedBook {
         this.urlImg = "/books/" + author.charAt(0) + "/" + author + "/" + title + "/image.jpg";
     }
 
+
     public void setFile(File file) {
         this.file = file;
     }

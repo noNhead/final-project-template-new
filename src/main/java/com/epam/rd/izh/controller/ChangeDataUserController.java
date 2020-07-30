@@ -17,6 +17,9 @@ import javax.validation.Valid;
 public class ChangeDataUserController {
     UserDetailsServiceMapper userDetailsServiceMapper = new UserDetailsServiceMapper();
 
+    /**
+     * Изменение данных пользователя
+     */
     @GetMapping("/userdatachange")
     public String userDataChange(Model model, HttpServletRequest httpServletRequest){
         String referer = httpServletRequest.getHeader("Referer");
@@ -30,7 +33,9 @@ public class ChangeDataUserController {
         }
         return "redirect:/checkuserpass";
     }
-
+    /**
+     * Изменение данных пользователя
+     */
     @PostMapping("/userdatachange/proceed")
     public String processNewPasswordChange(@Valid @ModelAttribute("userDataChange") AuthorizedUser authorizedUser, BindingResult bindingResult, Authentication authentication){
         if(bindingResult.hasErrors()){
@@ -39,12 +44,17 @@ public class ChangeDataUserController {
         userDetailsServiceMapper.newChangePass(authentication.getName(), authorizedUser.getPassword());
         return "redirect:/";
     }
-
+    /**
+     * Удаление пользователя
+     */
     @GetMapping("/userdatachange/delete/process")
     public String checkDeleteUser(){
         return "/userdatachange";
     }
 
+    /**
+     * Удаление пользователя
+     */
     @GetMapping("/userdelete/process")
     public String deleteUser(Authentication authentication){
         userDetailsServiceMapper.DeleteUser(authentication.getName());

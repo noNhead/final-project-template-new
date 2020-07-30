@@ -12,7 +12,12 @@ import static com.epam.rd.izh.util.StringConstants.*;
 
 @Repository
 public class UserRepository {
-
+  /**
+   * Ищет пользователя по логину в базе
+   * @param login
+   * @return
+   * @throws SQLException
+   */
   @Nullable
   public AuthorizedUser getAuthorizedUserByLogin(@Nonnull String login) throws SQLException {
     Connection connection = null;
@@ -41,6 +46,12 @@ public class UserRepository {
     }
   }
 
+  /**
+   * Добавляет пользователя в базу
+   * @param user
+   * @return
+   * @throws SQLException
+   */
   public boolean addAuthorizedUser(@Nullable AuthorizedUser user) throws SQLException {
     if (user != null) {
       Connection connection = null;
@@ -64,6 +75,14 @@ public class UserRepository {
     }
   }
 
+  /**
+   * Редактирует пользователя в базе
+   * @param login
+   * @param column
+   * @param newString
+   * @return
+   * @throws SQLException
+   */
   public boolean editAuthorizedUser(@Nullable String login, String column, @Nullable String newString) throws SQLException {
     Connection connection = null;
     Statement stmt = null;
@@ -85,6 +104,13 @@ public class UserRepository {
     }
     return false;
   }
+
+  /**
+   * Удаляет пользователя из базы
+   * @param login
+   * @return
+   * @throws SQLException
+   */
   public boolean deleteAuthorizedUser(@Nullable String login) throws SQLException {
     Connection connection = null;
     Statement stmt = null;

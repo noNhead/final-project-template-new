@@ -4,6 +4,8 @@ import com.epam.rd.izh.dto.BookValidate;
 import com.epam.rd.izh.entity.AddedBook;
 import com.epam.rd.izh.repository.BookRepository;
 import com.epam.rd.izh.repository.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +15,16 @@ import java.util.Objects;
 
 @Service
 public class BookDetailsServiceMapper {
-
+    private static final Logger LOGGER = LogManager.getLogger();
     private final BookRepository bookRepository = new BookRepository();
     private final UserRepository userRepository = new UserRepository();
 
-    public boolean BookAdding(AddedBook book){
+    /**
+     * Добавляет книгу
+     * @param book
+     * @return
+     */
+    public boolean bookAdding(AddedBook book){
         String bookValidateResult = BookValidate.Validate(book);
         if (bookValidateResult != null) {
             return false;
@@ -25,13 +32,19 @@ public class BookDetailsServiceMapper {
             try {
                 return bookRepository.addBook(book);
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                LOGGER.fatal(throwables.getMessage());
                 return false;
             }
         }
     }
 
-    public boolean BookDataChange(AddedBook book, AddedBook newBook) {
+    /**
+     * Изменяет параметры книги
+     * @param book
+     * @param newBook
+     * @return
+     */
+    public boolean bookDataChange(AddedBook book, AddedBook newBook) {
         if(!newBook.getTitle().equals("0&")){
             book.setTitle(newBook.getTitle());
         }
@@ -47,43 +60,64 @@ public class BookDetailsServiceMapper {
         return bookRepository.editBook(book);
     }
 
+    /**
+     * Ищет добавленную книгу
+     * @param book
+     * @return
+     */
     public AddedBook getAddedBook(AddedBook book) {
         AddedBook gotBook = null;
         System.out.println(book.getTitle() + " " + book.getAuthor());
         try {
             gotBook = bookRepository.getBookByTitleAndAuthor(book.getTitle(), book.getAuthor());
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            LOGGER.fatal(throwables.getMessage());
         }
         return gotBook;
     }
 
-    public boolean BookDelete(Authentication authentication, AddedBook book){
+    /**
+     * Удаляет книгу
+     * @param authentication
+     * @param book
+     * @return
+     */
+    public boolean bookDelete(Authentication authentication, AddedBook book){
         try {
             if (!Objects.equals(Objects.requireNonNull(userRepository.getAuthorizedUserByLogin(authentication.getName())).getRole(), "admin")){
                 return false;
             }
             return bookRepository.deleteBook(book.getId());
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            LOGGER.fatal(throwables.getMessage());
             return false;
         }
     }
 
+    /**
+     * Возвращает последние книги
+     * @param listSize
+     * @return
+     */
     public List<AddedBook> lastBookAdded(int listSize){
         try {
             return bookRepository.getLastAddedBookByTimestamp(listSize);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            LOGGER.fatal(throwables.getMessage());
         }
         return null;
     }
 
+    /**
+     * Возвращает найденные книги
+     * @param book
+     * @return
+     */
     public List<AddedBook> searchBook(AddedBook book){
         try {
             return bookRepository.searchBook(book);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            LOGGER.fatal(throwables.getMessage());
         }
         return null;
     }

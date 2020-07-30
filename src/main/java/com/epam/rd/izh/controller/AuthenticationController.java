@@ -120,6 +120,9 @@ public class AuthenticationController {
     return "redirect:/registration";
   }
 
+  /**
+   * Метод отвечающий за повторную проверку пароля перед изменением данных
+   */
   @GetMapping("/checkuserpass")
   public String checkUserPass(ModelMap model){
     if (!model.containsAttribute("checkUserPass")){
@@ -128,6 +131,9 @@ public class AuthenticationController {
     return "checkuserpass";
   }
 
+  /**
+   * Метод отвечающий за повторную проверку пароля перед изменением данных
+   */
   @PostMapping("/checkuserpass/proceed")
   public String processCheckUserPass(@Valid @ModelAttribute("checkUserPass") AuthorizedUser authorizedUser, BindingResult bindingResult, Authentication authentication){
     if(bindingResult.hasErrors()){

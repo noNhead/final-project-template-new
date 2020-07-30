@@ -4,6 +4,11 @@ import com.epam.rd.izh.entity.AuthorizedUser;
 import javax.validation.Valid;
 
 public class UserValidate {
+    /**
+     * Проверка данных при регистрации пользователя
+     * @param registeredUser
+     * @return
+     */
     public static String Validate(@Valid AuthorizedUser registeredUser){
         if (registeredUser.getLogin().length() <= 6) {
             return "Логин должен быть больше 7 символов";

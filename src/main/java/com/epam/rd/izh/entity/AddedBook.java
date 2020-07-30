@@ -90,7 +90,6 @@ public class AddedBook {
                 ", author='" + author + '\'' +
                 ", year='" + year + '\'' +
                 ", genre='" + genre + '\'' +
-                ", uuid=" + uuid.toString() +
-                '}';
+                "}";
     }
 }

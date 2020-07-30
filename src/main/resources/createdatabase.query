@@ -1,0 +1,30 @@
+create schema if not exists finalprojectdatabase collate utf8mb4_0900_ai_ci;
+
+create table if not exists addedbook
+(
+    id int auto_increment
+        primary key,
+    title varchar(255) null,
+    author varchar(255) null,
+    genre varchar(255) null,
+    date varchar(255) null,
+    UUID varchar(36) null,
+    dateAdded datetime null
+);
+
+create table if not exists author
+(
+    author varchar(255) null,
+    dateOfBirth date null,
+    dateOfDeath date null
+);
+
+create table if not exists autorizeduser
+(
+    id int auto_increment
+        primary key,
+    login varchar(20) null,
+    password varchar(255) null,
+    role varchar(255) null,
+    UUID varchar(36) null
+);

@@ -3,7 +3,6 @@ package com.epam.rd.izh.controller;
 import com.epam.rd.izh.entity.AuthorizedUser;
 import com.epam.rd.izh.repository.UserRepository;
 import com.epam.rd.izh.service.UserDetailsServiceMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.sql.SQLException;
 
 /**
  * В аргументы контроллеров, которые обрабатывают запросы, можно указать дополнительные входные параметры: Например:
@@ -27,13 +25,16 @@ import java.sql.SQLException;
 @Controller
 public class AuthenticationController {
 
-  @Autowired
-  UserRepository userRepository;
+  private final UserRepository userRepository;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
-  UserDetailsServiceMapper userDetailsServiceMapper = new UserDetailsServiceMapper();
+  UserDetailsServiceMapper userDetailsServiceMapper;
+
+  public AuthenticationController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+  }
 
   /**
    * Метод, отвечающий за логику авторизации пользователя.
@@ -63,6 +64,7 @@ public class AuthenticationController {
     }
     return "login";
   }
+
   @PostMapping("/login/proceed")
   public String processLogin(@Valid @ModelAttribute("loginForm") AuthorizedUser loginUser, BindingResult bindingResult) {
 
@@ -70,12 +72,7 @@ public class AuthenticationController {
       return "redirect:/login";
     }
     AuthorizedUser authorizedUser;
-    try {
-      authorizedUser = userRepository.getAuthorizedUserByLogin(loginUser.getLogin());
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
-      return "redirect:/login";
-    }
+    authorizedUser = userRepository.getAuthorizedUserByLogin(loginUser.getLogin());
     if (authorizedUser != null) {
       if (!passwordEncoder.matches(loginUser.getPassword(), authorizedUser.getPassword())){
         return "redirect:/login";
@@ -89,6 +86,7 @@ public class AuthenticationController {
   /**
    * Метод, отвечающий за логику регистрации пользователя.
    */
+
   @GetMapping("/registration")
   public String viewRegistration(Model model) {
     if(!model.containsAttribute("registrationForm")){

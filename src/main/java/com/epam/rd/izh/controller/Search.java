@@ -45,68 +45,9 @@ public class Search extends HttpServlet {
             model.addAttribute("searchForm", new AddedBook());
         }
 
-        AddedBook book = tagsPars(tags);
-        List<AddedBook> listBook = bookDetailsServiceMapper.searchBook(book);
+        List<AddedBook> listBook = bookDetailsServiceMapper.searchBook(tags);
         model.addAttribute("listBook", listBook);
         return "search";
-    }
-
-    /**
-     * Дробление тегов для поиска
-     */
-    private AddedBook tagsPars(String tags){
-        AddedBook book = new AddedBook();
-        StringBuilder string = new StringBuilder();
-        char[] arr = tags.toCharArray();
-        int i = 0;
-        if (arr[i]=='t' && arr[i+1]=='=' && arr[i+2] != 'a' && arr[i+3] != '='){
-            i+=2;
-            while(arr[i] != 'a' && arr[i+1] != '='){
-                string.append(arr[i]);
-                i++;
-                System.out.println(string);
-            }
-            book.setTitle(String.valueOf(string));
-        } else {
-            i+=2;
-            book.setTitle("0");
-        }
-        if (arr[i]=='a' && arr[i+1]=='=' && arr[i+2] != 'g' && arr[i+3] != '='){
-            i+=2;
-            while(arr[i] != 'g' && arr[i+1] != '='){
-                string.append(arr[i]);
-                i++;
-                System.out.println(string);
-            }
-            book.setAuthor(String.valueOf(string));
-        } else {
-            i+=2;
-            book.setAuthor("0");
-        }
-        if (arr[i]=='g' && arr[i+1]=='=' && arr[i+2] != 'd' && arr[i+3] != '='){
-            i+=2;
-            while(arr[i] != 'd' && arr[i+1] != '='){
-                string.append(arr[i]);
-                i++;
-                System.out.println(string);
-            }
-            book.setGenre(String.valueOf(string));
-        } else {
-            i+=2;
-            book.setGenre("0");
-        }
-        if (arr[i]=='d' && arr[i+1]=='=' && arr[i+2] != '&' && (i+2) != arr.length-1){
-            i+=2;
-            while(arr[i] != '&' && i != arr.length-1){
-                string.append(arr[i]);
-                i++;
-                System.out.println(string);
-            }
-            book.setYear(String.valueOf(string));
-        } else {
-            book.setYear("0");
-        }
-        return book;
     }
 
     /**
@@ -118,6 +59,7 @@ public class Search extends HttpServlet {
             System.out.println("Pikachu");
         }
         try {
+            //t - title, a - author, g - genre, d - date
             return "redirect:/search/t="+ URLEncoder.encode(book.getTitle(), "UTF-8")+"a="+URLEncoder.encode(book.getAuthor(), "UTF-8")+"g="+URLEncoder.encode(book.getGenre(), "UTF-8")+"d="+URLEncoder.encode(book.getYear(), "UTF-8")+"&";
         } catch (UnsupportedEncodingException e) {
             LOGGER.fatal(e.getMessage());

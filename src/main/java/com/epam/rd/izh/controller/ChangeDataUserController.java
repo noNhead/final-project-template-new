@@ -24,15 +24,16 @@ public class ChangeDataUserController {
     public String userDataChange(Model model, HttpServletRequest httpServletRequest){
         String referer = httpServletRequest.getHeader("Referer");
         if(referer != null){
-            if (referer.contains("checkuserpass") || referer.contains("userdatachange")) {
-                if(!model.containsAttribute("userDataChange")){
-                    model.addAttribute("userDataChange", new AuthorizedUser());
-                }
-                return "userdatachange";
+            if ((referer.contains("checkuserpass") || referer.contains("userdatachange"))
+                    && (!model.containsAttribute("userDataChange"))) {
+
+                model.addAttribute("userDataChange", new AuthorizedUser());
             }
+            return "userdatachange";
         }
         return "redirect:/checkuserpass";
     }
+
     /**
      * Изменение данных пользователя
      */
@@ -44,6 +45,7 @@ public class ChangeDataUserController {
         userDetailsServiceMapper.newChangePass(authentication.getName(), authorizedUser.getPassword());
         return "redirect:/";
     }
+
     /**
      * Удаление пользователя
      */

@@ -84,26 +84,14 @@ public class BookController {
         }
         return "bookdatachange";
     }
+
     /**
      * Редактирование данных книги
      */
     @PostMapping("/bookdatachange/proceed")
     public String processBookDataChange(@Valid @ModelAttribute("bookDataChange") AddedBook newBook, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
-            return "redirect:bookdatachange";
-        }
-        newBook.setId();
-        if (newBook.getTitle() == null) {
-                newBook.setTitle("0&");
-        }
-        if (newBook.getAuthor() == null) {
-            newBook.setAuthor("0&");
-        }
-        if (newBook.getGenre() == null) {
-            newBook.setGenre("0&");
-        }
-        if (newBook.getYear() == null) {
-            newBook.setYear("0&");
+            return "redirect:/bookdatachange";
         }
         if(bookDetailsServiceMapper.bookDataChange(objectBook, newBook)){
             objectBook = null;
@@ -125,18 +113,14 @@ public class BookController {
         }
         return "redirect:/bookdatachange";
     }
+
     /**
      * Удаление книги, если есть права администратора
      */
     @GetMapping("/book/{author}/{title}")
     public String boolTitlePage(Model model, @PathVariable("author") String author, @PathVariable("title") String title){
-        AddedBook book = new AddedBook();
-        book.setTitle(title);
-        book.setAuthor(author);
-
-        book = bookDetailsServiceMapper.getAddedBook(book);
+        AddedBook book = bookDetailsServiceMapper.getAddedBookByTitleAndAuthor(title, author);
         model.addAttribute("book", book);
         return "book";
     }
-
 }

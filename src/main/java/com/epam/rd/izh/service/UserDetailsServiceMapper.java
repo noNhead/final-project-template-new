@@ -1,11 +1,9 @@
 package com.epam.rd.izh.service;
 
-import com.epam.rd.izh.dto.UserValidate;
 import com.epam.rd.izh.entity.AuthorizedUser;
 import com.epam.rd.izh.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -29,16 +27,16 @@ import static com.epam.rd.izh.util.StringConstants.PASSWORD;
 @Service
 public class UserDetailsServiceMapper implements UserDetailsService {
 
-  private static final Logger LOGGER = LogManager.getLogger();
+  private static Logger LOGGER;
+  private final UserRepository userRepository;
 
-  @Autowired
-  UserRepository userRepository = new UserRepository();
+  public UserDetailsServiceMapper(UserRepository userRepository) {
+    this.userRepository = userRepository;
+    LOGGER = LogManager.getLogger();
+  }
 
   /**
    * Возвращает сущность пользователя
-   * @param login
-   * @return
-   * @throws UsernameNotFoundException
    */
   @Override
   public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
@@ -66,10 +64,10 @@ public class UserDetailsServiceMapper implements UserDetailsService {
    * @return возвращает true если пользователь успешно добавлен
    */
   public boolean userRegistration(AuthorizedUser user) {
-    String registerValidateResult = UserValidate.Validate(user);
-    if (registerValidateResult == null) {
-      return false;
-    }
+    //String registerValidateResult = UserValidate.Validate(user);
+    //if (registerValidateResult == null) {
+    //  return false;
+    //}
     user.setRole("user");
     user.setId(UUID.randomUUID());
     try {
@@ -83,9 +81,6 @@ public class UserDetailsServiceMapper implements UserDetailsService {
 
   /**
    * Изменяет пароль
-   * @param username
-   * @param password
-   * @return
    */
   public boolean newChangePass(String username, String password){
     try {
@@ -98,8 +93,6 @@ public class UserDetailsServiceMapper implements UserDetailsService {
 
   /**
    * Удаляет пользователя
-   * @param username
-   * @return
    */
   public boolean DeleteUser(String username){
     try {

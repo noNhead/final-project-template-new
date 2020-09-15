@@ -8,9 +8,6 @@ package com.epam.rd.izh.util;
  */
 public class StringConstants {
 
-  public static final String URL_DATABASE = "jdbc:mysql://localhost:3306/mysql?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-  public static final String ROOT_LOGIN = "root";
-  public static final String ROOT_PASS = "1";
   public static final String AUTHOR = "author";
   public static final String GENRE = "genre";
   public static final String WORDDATE = "date";

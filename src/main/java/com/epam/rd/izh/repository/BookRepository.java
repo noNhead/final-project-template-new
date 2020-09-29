@@ -12,11 +12,7 @@ import java.util.UUID;
 import static com.epam.rd.izh.util.StringConstants.*;
 
 public class BookRepository {
-    JdbcTemplate jdbcTemplate;
-
-    public BookRepository (JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
     /**
      * Поиск книги по Названию и пользователю в базе

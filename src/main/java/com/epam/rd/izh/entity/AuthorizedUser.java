@@ -97,4 +97,13 @@ public class AuthorizedUser {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "AuthorizedUser{" +
+            "login='" + login + '\'' +
+            ", password='" + password + '\'' +
+            ", role='" + role + '\'' +
+            ", id=" + id.toString() +
+            '}';
+  }
 }

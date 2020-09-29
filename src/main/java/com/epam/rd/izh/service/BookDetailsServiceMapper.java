@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,6 +22,9 @@ public class BookDetailsServiceMapper {
     private final UserRepository userRepository = new UserRepository();
     private final FileRepository fileRepository = new FileRepository();
     public static final int BUFFER_SIZE = 1024 * 1024 * 20;
+
+    public BookDetailsServiceMapper() {
+    }
 
     /**
      * Добавляет книгу
@@ -35,12 +37,7 @@ public class BookDetailsServiceMapper {
         //if (bookValidateResult != null) {
         //    return false;
         //} else {
-        try {
-            return bookRepository.addBook(book);
-        } catch (SQLException throwables) {
-            LOGGER.fatal(throwables.getMessage());
-            return false;
-        }
+        return bookRepository.addBook(book);
         //}
     }
 
@@ -79,11 +76,7 @@ public class BookDetailsServiceMapper {
     public AddedBook getAddedBookByTitleAndAuthor(String title, String author) {
         AddedBook book = writeFieldForSearch(title, author);
         AddedBook gotBook = null;
-        try {
-            gotBook = bookRepository.getBookByTitleAndAuthor(book.getTitle(), book.getAuthor());
-        } catch (SQLException throwables) {
-            LOGGER.fatal(throwables.getMessage());
-        }
+        gotBook = bookRepository.getBookByTitleAndAuthor(book.getTitle(), book.getAuthor());
         return gotBook;
     }
 
@@ -95,15 +88,10 @@ public class BookDetailsServiceMapper {
      * @return успех или нет
      */
     public boolean bookDelete(Authentication authentication, AddedBook book) {
-        try {
-            if (!Objects.equals(Objects.requireNonNull(userRepository.getAuthorizedUserByLogin(authentication.getName())).getRole(), "admin")) {
-                return false;
-            }
-            return bookRepository.deleteBook(book.getId());
-        } catch (SQLException throwables) {
-            LOGGER.fatal(throwables.getMessage());
+        if (!Objects.equals(Objects.requireNonNull(userRepository.getAuthorizedUserByLogin(authentication.getName())).getRole(), "admin")) {
             return false;
         }
+        return bookRepository.deleteBook(book.getId());
     }
 
     /**
@@ -113,12 +101,7 @@ public class BookDetailsServiceMapper {
      * @return список
      */
     public List<AddedBook> lastBookAdded(int listSize) {
-        try {
-            return bookRepository.getLastAddedBookByTimestamp(listSize);
-        } catch (SQLException throwables) {
-            LOGGER.fatal(throwables.getMessage());
-        }
-        return null;
+        return bookRepository.getLastAddedBookByTimestamp(listSize);
     }
 
     /**
@@ -129,12 +112,7 @@ public class BookDetailsServiceMapper {
      */
     public List<AddedBook> searchBook(String tags) {
         AddedBook book = tagsPars(tags);
-        try {
-            return bookRepository.searchBook(book);
-        } catch (SQLException throwables) {
-            LOGGER.fatal(throwables.getMessage());
-        }
-        return null;
+        return bookRepository.searchBook(book);
     }
 
     /**
@@ -175,11 +153,7 @@ public class BookDetailsServiceMapper {
      */
     public AddedBook getAddedBook(AddedBook book) {
         AddedBook gotBook = null;
-        try {
-            gotBook = bookRepository.getBookByTitleAndAuthor(book.getTitle(), book.getAuthor());
-        } catch (SQLException throwables) {
-            LOGGER.fatal(throwables.getMessage());
-        }
+        gotBook = bookRepository.getBookByTitleAndAuthor(book.getTitle(), book.getAuthor());
         return gotBook;
     }
 

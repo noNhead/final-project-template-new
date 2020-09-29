@@ -6,15 +6,16 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.UUID;
 
 import static com.epam.rd.izh.util.StringConstants.*;
 
 @Repository
 public class UserRepository {
-  JdbcTemplate jdbcTemplate;
+  private JdbcTemplate jdbcTemplate;
 
-  public UserRepository(JdbcTemplate jdbcTemplate) {
+  public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
 
@@ -24,20 +25,22 @@ public class UserRepository {
   @Nullable
   public AuthorizedUser getAuthorizedUserByLogin(@Nonnull String login) {
     String sqlRequest = "SELECT id, login, password, role, UUID FROM finalprojectdatabase.autorizeduser WHERE login = '?" + login + "';";
-    return (AuthorizedUser) jdbcTemplate.query(sqlRequest, (resultSet, numRow) ->
+    List<AuthorizedUser> authorizedUsers = jdbcTemplate.query(sqlRequest, (resultSet, numRow) ->
             new AuthorizedUser(
                     resultSet.getString(LOGIN),
                     resultSet.getString(PASSWORD),
                     resultSet.getString(ROLE),
                     UUID.fromString(resultSet.getString(UUIDFORUSER))));
+    return authorizedUsers.get(0);
   }
 
   /**
    * Добавляет пользователя в базу
    */
-  public void addAuthorizedUser(@Nullable AuthorizedUser user) {
-    String sqlRequest = "INSERT INTO finalprojectdatabase.autorizeduser(login, password, role, UUID) VALUES ('?" + user.getLogin() + "','?" + user.getPassword() + "','?" + user.getRole() + "', '?" + user.getId().toString() + "')";
-    jdbcTemplate.execute(sqlRequest);
+  public void addAuthorizedUser(AuthorizedUser user) {
+    String sqlRequest = "INSERT INTO finalprojectdatabase.autorizeduser(login, password, role, UUID) VALUES (?, ?, ?, ?)";
+    System.out.println(user.toString());
+    jdbcTemplate.update(sqlRequest, user.getLogin(), user.getPassword(), user.getRole(), user.getId().toString());
   }
 
   /**

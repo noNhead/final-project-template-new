@@ -3,6 +3,7 @@ package com.epam.rd.izh.controller;
 import com.epam.rd.izh.entity.AuthorizedUser;
 import com.epam.rd.izh.repository.UserRepository;
 import com.epam.rd.izh.service.UserDetailsServiceMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -25,16 +26,12 @@ import javax.validation.Valid;
 @Controller
 public class AuthenticationController {
 
-  private final UserRepository userRepository;
+  private final UserRepository userRepository = new UserRepository();
 
-  private final PasswordEncoder passwordEncoder;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
-  UserDetailsServiceMapper userDetailsServiceMapper;
-
-  public AuthenticationController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-    this.userRepository = userRepository;
-    this.passwordEncoder = passwordEncoder;
-  }
+  private final UserDetailsServiceMapper userDetailsServiceMapper = new UserDetailsServiceMapper();
 
   /**
    * Метод, отвечающий за логику авторизации пользователя.

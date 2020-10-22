@@ -36,8 +36,8 @@ public class UserRepository {
    * Добавляет пользователя в базу
    */
   public void addAuthorizedUser(AuthorizedUser user) {
-    String sqlRequest = "INSERT INTO finalprojectdatabase.autorizeduser(login, password, role, UUID) VALUES ('123', '$2a$10$WGKZMoYLKThDtLG/Kupdp.BsIA24Pwoy834qmovIdflZjzGEqZQWW', 'user', 'fc86d7f0-5473-4803-9ba2-ad60f02764b0')";
-    jdbcTemplate.execute(sqlRequest);
+    String sqlRequest = "INSERT INTO finalprojectdatabase.autorizeduser(login, password, role, UUID) VALUES ('?"+ user.getLogin() + "', '?"+ user.getPassword() + "', '?"+ user.getRole() + "', '?"+ user.getId().toString() + "')";
+    jdbcTemplate.execute(sqlRequest); //По какой-то причине при отправке запроса выдаётся NPE проблема где-то с коннектом, однако, если использовать просто Jdbc то всё работает, но на JdbcTemplate не работает :(
   }
 
   /**

@@ -1,6 +1,7 @@
 package com.epam.rd.izh.repository;
 
 import com.epam.rd.izh.entity.AuthorizedUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,11 +14,8 @@ import static com.epam.rd.izh.util.StringConstants.*;
 
 @Repository
 public class UserRepository {
-  private JdbcTemplate jdbcTemplate;
-
-  public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-    this.jdbcTemplate = jdbcTemplate;
-  }
+  @Autowired
+  JdbcTemplate jdbcTemplate;
 
   /**
    * Ищет пользователя по логину в базе
@@ -38,9 +36,8 @@ public class UserRepository {
    * Добавляет пользователя в базу
    */
   public void addAuthorizedUser(AuthorizedUser user) {
-    String sqlRequest = "INSERT INTO finalprojectdatabase.autorizeduser(login, password, role, UUID) VALUES (?, ?, ?, ?)";
-    System.out.println(user.toString());
-    jdbcTemplate.update(sqlRequest, user.getLogin(), user.getPassword(), user.getRole(), user.getId().toString());
+    String sqlRequest = "INSERT INTO finalprojectdatabase.autorizeduser(login, password, role, UUID) VALUES ('123', '$2a$10$WGKZMoYLKThDtLG/Kupdp.BsIA24Pwoy834qmovIdflZjzGEqZQWW', 'user', 'fc86d7f0-5473-4803-9ba2-ad60f02764b0')";
+    jdbcTemplate.execute(sqlRequest);
   }
 
   /**

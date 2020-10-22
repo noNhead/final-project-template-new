@@ -137,7 +137,6 @@ public class AuthenticationController {
     if (authorizedUser.getPassword() == null) {
       return "redirect:/userdatachange";
     }
-    System.out.println(authentication.getName() + authorizedUser.getPassword());
     if(!passwordEncoder.matches(authorizedUser.getPassword(), userDetailsServiceMapper.loadUserByUsername(authentication.getName()).getPassword())){
       return "redirect:/checkuserpass";
     }
